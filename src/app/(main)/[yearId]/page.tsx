@@ -10,7 +10,9 @@ export default function Home() {
   return (
     <>
       <main>
+        <div className=" mt-70">
         <Hero />
+        </div>
         <div className="relative z-10 w-full overflow-x-clip">
           <Collaboration />
           <SamePage />
