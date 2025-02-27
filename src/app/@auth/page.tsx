@@ -1,10 +1,10 @@
+import Login from "@/components/auth/Login";
 
-export default function Counter() {
+export default function LoginPage() {
  
   return (
-    <div>
-      <p>Count</p>
-      <button>Increment</button>
+    <div className="m-auto w-full max-w-md">
+      <Login/>
     </div>
   )
 }

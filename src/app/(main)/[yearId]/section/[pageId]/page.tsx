@@ -1,7 +1,6 @@
-import Tiptap from "@/components/editor";
-
+import TiptapEditor from "@/components/editor/TiptapEditor";
 
  const Home = () => {
-  return <Tiptap />
+  return <TiptapEditor />
 }
 export default Home;
