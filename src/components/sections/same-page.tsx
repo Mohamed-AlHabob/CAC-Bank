@@ -1,8 +1,10 @@
 "use client";
 import { BranchIcon } from "@/icons/branch";
 import { stylesWithCssVar } from "@/utils/motion";
-import { useScroll, useTransform, motion } from "framer-motion";
+import { useScroll, useTransform, motion, MotionStyle } from "framer-motion";
 import { useRef } from "react";
+import Image from 'next/image';
+import { Chart } from "../global/Chart";
 
 const animationOrder = {
   initial: 0,
@@ -147,9 +149,9 @@ export const SamePage = () => {
     pos >= 1 ? "relative" : "fixed"
   );
 
-  const avatarOpacity = useTransform(scrollYProgress, (pos) =>
-    pos >= animationOrder.fadeInEnd ? 1 : 0
-  );
+  // const avatarOpacity = useTransform(scrollYProgress, (pos) =>
+  //   pos >= animationOrder.fadeInEnd ? 1 : 0
+  // );
 
   return (
     <section ref={targetRef}>
@@ -161,20 +163,21 @@ export const SamePage = () => {
               opacity,
               "--x": x,
               "--scale": scale,
-            })}
+            }) as MotionStyle}
           >
-            <img src="/main-screen.svg" className="h-auto w-full" />
-            <motion.img
+            {/* <Image src="/main-screen.svg" width={50} height={50} alt="" className="h-auto w-full" /> */}
+            <Chart/>
+            {/* <motion.img
               style={{ opacity: avatarOpacity }}
               className="absolute left-[13%] top-1/2 h-[1.5vw] w-[1.5vw] translate-y-1/2 rounded-full border border-[#c82] object-cover will-change-transform"
               src="https://unsplash.com/photos/sibVwORYqs0/download?force=true&w=128&h=128"
-            />
+            /> */}
             <motion.span
               className="mt-3 block text-2xl text-white"
               style={{ opacity: newBranchOpacity }}
             >
-              <BranchIcon className="mr-3 inline-block h-12 w-12" /> Feature
-              branch
+              <BranchIcon className="mr-3 inline-block h-12 w-12" />
+               2024
             </motion.span>
           </motion.div>
           <motion.div
@@ -183,34 +186,36 @@ export const SamePage = () => {
               opacity: loadingScreenOpacity,
               "--x": loadingScreenX,
               "--scale": loadingScreenscale,
-            })}
+            })as MotionStyle}
           >
-            <img src="/loading-screen.svg" className="h-auto w-full" />
+            {/* <Image src="/loading-screen.svg" width={50} height={50} alt="" className="h-auto w-full" /> */}
+            <Chart/>
             <motion.div
               style={{ opacity: newBranchOpacity }}
               className="absolute inset-0"
             >
-              <img src="/main-screen.svg" className="h-auto w-full" />
+              {/* <Image src="/main-screen.svg" width={50} height={50} alt="" className="h-auto w-full" /> */}
+              <Chart/>
             </motion.div>
             <motion.span
               className="mt-3 block text-2xl text-white"
               style={{ opacity: newBranchOpacity }}
             >
-              <BranchIcon className="mr-3 inline-block h-12 w-12" /> Frontend
-              FYI&apos;s branch
+              <BranchIcon className="mr-3 inline-block h-12 w-12" /> 
+              2025
             </motion.span>
           </motion.div>
 
           <motion.p
-            className="translate-y-centered-offset absolute top-1/2 left-[calc(50%-60rem)] w-[50rem] pl-16 text-2xl leading-tight text-white"
+            className="translate-y-centered-offset absolute top-1/2 left-[calc(50%-60rem)] w-[50rem] pl-18 text-2xl leading-tight text-white"
             style={stylesWithCssVar({
               opacity: endTextOpacity,
               "--y": endTexty,
-            })}
+            }) as MotionStyle}
           >
-            <span className="text-primary">Built for flow</span>
+            <span className="text-primary">Financial farewell statistics</span>
             <br />
-            Spin up a new branch for any sized project in seconds.
+            during the year 2025.
           </motion.p>
         </div>
         <motion.p
@@ -218,10 +223,10 @@ export const SamePage = () => {
             opacity: paragraph1Opacity,
             "--y": paragraph1TranslateY,
             position,
-          })}
+          }) as MotionStyle}
           className="translate-y-centered-offset top-1/2 left-[20px] w-[300px] pl-16 text-2xl leading-tight text-white"
         >
-          Not only share code,
+          The numbers speak for us,
           <br />
           <span className="text-primary">share the context.</span>
         </motion.p>
@@ -230,13 +235,13 @@ export const SamePage = () => {
             opacity: paragraph2Opacity,
             "--y": paragraph2TranslateY,
             position,
-          })}
+          }) as MotionStyle}
           className="translate-y-centered-offset top-1/2 right-[20px] w-[300px] pr-16 text-xl leading-tight text-white"
         >
-          Sometimes it&apos;s not about code.
+          Develop, learn and build a ready team.
           <br />
           <span className="text-primary">
-            Get everybody on the same page. Literally.
+          It is the reason for the difference between one year and another.
           </span>
         </motion.p>
       </div>

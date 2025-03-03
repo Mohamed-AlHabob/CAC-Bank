@@ -78,6 +78,7 @@ export const Collaboration = () => {
                 src="/main-screen.svg"
                 className="h-auto max-h-none w-[70vw]"
               />
+               {/* <Chart/> */}
               <motion.div
                 style={{ opacity: avatarGroupOpacity, x: avatarGroupX }}
                 className="absolute right-[10%] top-[1.5%] flex gap-2"

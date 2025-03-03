@@ -1,9 +1,8 @@
+import About from "@/components/sections/About";
 import { Collaboration } from "@/components/sections/collaboration";
 import { Features } from "@/components/sections/features";
+import Footer from "@/components/sections/Footer";
 import { Hero } from "@/components/sections/hero";
-import { MoreFeatures } from "@/components/sections/more-features";
-import { NoLockin } from "@/components/sections/no-lockin";
-import ParallaxScroll from "@/components/sections/ParallaxScroll";
 import { SamePage } from "@/components/sections/same-page";
 import { StreamlinedExperience } from "@/components/sections/streamlined-experience";
 
@@ -17,11 +16,10 @@ export default function Home() {
         <div className="relative z-10 w-full overflow-x-clip">
           <Collaboration />
           <SamePage />
-          {/* <ParallaxScroll/> */}
           <StreamlinedExperience />
+          <About/>
           <Features />
-          <MoreFeatures />
-          <NoLockin />
+          <Footer />
         </div>
       </main>
     </>

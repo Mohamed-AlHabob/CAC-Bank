@@ -1,7 +1,9 @@
 "use client";
 import { stylesWithCssVar } from "@/utils/motion";
-import { useScroll, useTransform, motion } from "framer-motion";
+import { useScroll, useTransform, motion, MotionStyle } from "framer-motion";
+import Image from "next/image";
 import { useRef } from "react";
+import { Chart } from "../global/Chart";
 
 export const Features = () => {
   const targetRef = useRef<HTMLDivElement | null>(null);
@@ -54,22 +56,25 @@ export const Features = () => {
   return (
     <section
       ref={targetRef}
-      className="flex h-[500vh] flex-col items-center justify-start"
+      className="flex h-[500vh] flex-col items-center justify-start bg-white"
     >
       <div className="sticky top-[16.7vh] h-[66.8vh] px-16 text-2xl leading-[1] text-white [&_p]:w-[45rem] [&_p]:max-w-[90%]">
         <motion.div style={{ x, scale }} className="relative h-full">
           <motion.figure style={{ opacity }} className="h-full">
-            <img src="/main-screen.svg" className="h-full w-auto" />
+            {/* <Image src="/main-screen.svg" width={50} height={50} alt="" className="h-full w-auto" /> */}
+            <Chart/>
           </motion.figure>
           <motion.figure style={{ opacity: text2Opacity }}>
-            <img
+            <Image
               src="/command-palette.svg"
+              width={50} height={50} alt=""
               className="absolute inset-0 h-full w-auto"
             />
           </motion.figure>
           <motion.figure style={{ opacity: text3Opacity }}>
-            <img
+            <Image
               src="/devtools.svg"
+              width={50} height={50} alt=""
               className="absolute inset-0 h-full w-auto"
             />
           </motion.figure>
@@ -78,7 +83,7 @@ export const Features = () => {
           style={stylesWithCssVar({
             opacity: text1Opacity,
             "--y": text1Y,
-          })}
+          }) as MotionStyle}
           className="translate-y-centered-offset absolute top-1/2 left-0"
         >
           <span className="text-primary">Preconfigured environments</span>
@@ -90,7 +95,7 @@ export const Features = () => {
           style={stylesWithCssVar({
             opacity: text2Opacity,
             "--y": text2Y,
-          })}
+          }) as MotionStyle}
           className="translate-y-centered-offset absolute top-1/2 left-0"
         >
           <span className="text-primary">Command Pallete</span>
@@ -101,7 +106,7 @@ export const Features = () => {
           style={stylesWithCssVar({
             opacity: text3Opacity,
             "--y": text3Y,
-          })}
+          }) as MotionStyle}
           className="translate-y-centered-offset absolute top-1/2 left-0"
         >
           <span className="text-primary">Devtools</span>
