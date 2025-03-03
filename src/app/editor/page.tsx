@@ -9,7 +9,6 @@ export default function Page() {
       <SettingsProvider>
         <PlateEditor />
       </SettingsProvider>
-
       <Toaster />
     </div>
   );

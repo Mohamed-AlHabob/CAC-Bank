@@ -52,29 +52,33 @@ export const Features = () => {
     [0.7, 0.8, 0.9],
     ["30px", "0px", "-30px"]
   );
+  const height = useTransform(scrollYProgress, [0, 0.9], [50, 0]);
 
   return (
     <section
       ref={targetRef}
-      className="flex h-[500vh] flex-col items-center justify-start bg-white"
+      className="flex h-[500vh] flex-col items-center justify-start"
     >
-      <div className="sticky top-[16.7vh] h-[66.8vh] px-16 text-2xl leading-[1] text-white [&_p]:w-[45rem] [&_p]:max-w-[90%]">
+      <div className="sticky top-[16.7vh] h-[66.8vh] px-16 text-2xl leading-[1] [&_p]:w-[45rem] [&_p]:max-w-[90%]">
         <motion.div style={{ x, scale }} className="relative h-full">
           <motion.figure style={{ opacity }} className="h-full">
-            {/* <Image src="/main-screen.svg" width={50} height={50} alt="" className="h-full w-auto" /> */}
-            <Chart/>
+            <Chart />
           </motion.figure>
           <motion.figure style={{ opacity: text2Opacity }}>
             <Image
               src="/command-palette.svg"
-              width={50} height={50} alt=""
+              width={50}
+              height={50}
+              alt="Command Palette"
               className="absolute inset-0 h-full w-auto"
             />
           </motion.figure>
           <motion.figure style={{ opacity: text3Opacity }}>
             <Image
               src="/devtools.svg"
-              width={50} height={50} alt=""
+              width={50}
+              height={50}
+              alt="Devtools"
               className="absolute inset-0 h-full w-auto"
             />
           </motion.figure>
@@ -98,7 +102,7 @@ export const Features = () => {
           }) as MotionStyle}
           className="translate-y-centered-offset absolute top-1/2 left-0"
         >
-          <span className="text-primary">Command Pallete</span>
+          <span className="text-primary">Command Palette</span>
           <br />
           Access and complete any action in seconds with the command palette.
         </motion.p>
@@ -115,6 +119,9 @@ export const Features = () => {
           more efficiently.
         </motion.p>
       </div>
+      <motion.div style={{ height }} className="relative mt-[100px]">
+        <div className="absolute h-[1550%] w-[120%] left-[-10%] rounded-b-[50%] bg-accent-foreground z-10 shadow-[0px_60px_50px_rgba(0,0,0,0.748)]"></div>
+      </motion.div>
     </section>
   );
 };
