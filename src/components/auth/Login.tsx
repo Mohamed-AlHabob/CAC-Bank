@@ -1,19 +1,19 @@
-import { supabase } from '@/lib/supabase';
+'use client'
 
-const Login = () => {
-  const handleLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-    });
-    if (error) console.error(error);
-    else console.log('Logged in:', data);
-  };
+import { DialogContent } from "@radix-ui/react-dialog"
+import { Dialog, DialogTitle } from "../ui/dialog"
+import { SignedIn, UserButton } from "@clerk/nextjs"
+
+export default function Login() {
 
   return (
-    <div>
-      <button onClick={handleLogin}>Login with Google</button>
-    </div>
-  );
-};
-
-export default Login;
+<Dialog>
+  <DialogTitle className="">Auth</DialogTitle>
+  <DialogContent className=" items-center">
+  <SignedIn>
+    <UserButton />
+  </SignedIn>
+  </DialogContent>
+</Dialog>
+  )
+}
