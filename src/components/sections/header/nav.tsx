@@ -108,7 +108,7 @@ export default function Nav() {
           <div className="mt-10 lg:mt-20">
             {currentYear?.pages.map((item, index) => (
               <div key={`section_${index}`} className="mb-6">
-                <Link href={item.title}>
+                <Link href={`/${currentYear.fiscalYear}/section/${item.title}`}>
                   <motion.p
                     onMouseOver={() => {
                       setSelectedLink({ isActive: true, index })
@@ -163,7 +163,7 @@ export default function Nav() {
                 Privacy Policy
               </motion.li>
               <motion.li custom={[0.3, 0]} variants={translate} initial="initial" animate="enter" exit="exit">
-                Terms & Conditions
+                Terms & Conditions {currentYear?.fiscalYear}
               </motion.li>
             </ul>
             <ul className="w-1/2 lg:w-auto mt-2.5 overflow-hidden list-none p-0 ml-6">
