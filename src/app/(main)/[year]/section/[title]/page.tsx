@@ -1,4 +1,3 @@
-import { Toaster } from "sonner"
 import { notFound } from "next/navigation"
 import { SettingsProvider } from "@/components/editor/settings"
 import { getYearByFiscalYear } from "@/action"
@@ -24,7 +23,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <div className="min-h-screen w-full" data-registry="plate">
       <SettingsProvider>
-        <PageContent fiscalYear={"2023"} title={title} />
+        <PageContent fiscalYear={year} title={title} />
       </SettingsProvider>
     </div>
   )

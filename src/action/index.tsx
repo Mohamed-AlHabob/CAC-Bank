@@ -224,7 +224,7 @@ export async function createPage(data: Prisma.PageCreateInput) {
 
   if (result) {
     revalidatePath(`/years/${result.yearId}`)
-    revalidatePath(`/pages`)
+    revalidatePath(`/`)
   }
 
   return result
@@ -368,7 +368,3 @@ export async function getFullYearStructure(yearId: string) {
     "Failed to fetch year structure",
   )
 }
-
-// Create a separate file for client-side Prisma usage if needed
-// lib/prisma-client.ts
-

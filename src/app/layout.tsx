@@ -8,6 +8,7 @@ import { ClerkProvider } from "@clerk/nextjs"
 import { YearProvider } from "@/components/context/YearContext"
 import { getLatestYearWithPages } from "@/action"
 import { ModalProvider } from "@/components/providers/modal-provider"
+import Header from "@/components/sections/header/header"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default async function RootLayout({
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <YearProvider initialYear={initialYear}>
+              <Header />
               {children}
               <ModalProvider />
             </YearProvider>
