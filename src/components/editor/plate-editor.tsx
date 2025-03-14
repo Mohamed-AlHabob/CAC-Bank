@@ -1,17 +1,37 @@
-'use client';
+"use client"
 
-import React from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useEffect } from "react"
+import { DndProvider } from "react-dnd"
+import { HTML5Backend } from "react-dnd-html5-backend"
 
-import { Plate } from '@udecode/plate/react';
+import { Plate } from "@udecode/plate/react"
 
-import { useCreateEditor } from '@/components/editor/use-create-editor';
-import { SettingsDialog } from '@/components/editor/settings';
-import { Editor, EditorContainer } from '@/components/plate-ui/editor';
+import { useCreateEditor } from "@/components/editor/use-create-editor"
+import { Editor, EditorContainer } from "@/components/plate-ui/editor"
 
-export function PlateEditor() {
-  const editor = useCreateEditor();
+interface PlateEditorProps {
+  initialValue?: any
+  onChange?: (value: any) => void
+  readOnly?: boolean
+}
+
+export function PlateEditor({ initialValue, onChange, readOnly = false }: PlateEditorProps = {}) {
+  const editor = useCreateEditor({
+    readOnly,
+    value: initialValue ? initialValue : undefined,
+  })
+
+  // Set up effect to handle content changes
+  useEffect(() => {
+    if (onChange && editor) {
+      const unsubscribe = editor.history.subscribe(() => {
+        const value = editor.children
+        onChange(value)
+      })
+
+      return () => unsubscribe()
+    }
+  }, [editor, onChange])
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -19,9 +39,8 @@ export function PlateEditor() {
         <EditorContainer>
           <Editor variant={"comment"} />
         </EditorContainer>
-
-        <SettingsDialog />
       </Plate>
     </DndProvider>
-  );
+  )
 }
+

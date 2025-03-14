@@ -1,28 +1,22 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { PlateEditor } from "@/components/editor/plate-editor"
-import { Card, CardContent } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
 import { useYear } from "@/components/context/YearContext"
 import { updatePage } from "@/action"
 import { Button } from "@/components/ui/button"
-import { Edit, Eye, ArrowLeft, Save } from "lucide-react"
-import Link from "next/link"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import AnimatedTitle from "@/components/global/AnimatedTitle"
 
 interface Page {
   id: string
   title: string
-  slug: string // Add slug to the interface
+  slug: string
   content?: string | null
   isPublished: boolean
   yearId: string
   initialPromotionalImage?: string | null
+  projectName?: string
+  date?: string
 }
 
 interface PageContentProps {
@@ -36,22 +30,35 @@ export default function PageContent({ fiscalYear, slug }: PageContentProps) {
   const [loading, setLoading] = useState(true)
   const [isEditable, setIsEditable] = useState(false)
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
-  const [pageTitle, setPageTitle] = useState("")
+  const [editorContent, setEditorContent] = useState<any>(null)
   const router = useRouter()
 
   useEffect(() => {
     if (currentYear) {
-      // Find the page by slug instead of title
       const foundPage = currentYear.pages.find((p) => p.slug === slug)
       if (foundPage) {
         setPage(foundPage as Page)
-        setPageTitle(foundPage.title)
+
+        // Parse content if it exists
+        if (foundPage.content) {
+          try {
+            const parsedContent = JSON.parse(foundPage.content)
+            setEditorContent(parsedContent)
+          } catch (e) {
+            // If content is not valid JSON, use it as a simple text
+            setEditorContent([
+              {
+                type: "p",
+                children: [{ text: foundPage.content }],
+              },
+            ])
+          }
+        }
       }
       setLoading(false)
     }
   }, [currentYear, slug])
 
-  // Handle unsaved changes warning
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (isEditable && hasUnsavedChanges) {
@@ -65,31 +72,19 @@ export default function PageContent({ fiscalYear, slug }: PageContentProps) {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload)
   }, [isEditable, hasUnsavedChanges])
 
-  // Reset hasUnsavedChanges when switching to view mode
-  useEffect(() => {
-    if (!isEditable) {
-      setHasUnsavedChanges(false)
-    }
-  }, [isEditable])
-
   const handleSaveContent = async () => {
-    if (!page || !page.content) return
+    if (!page) return
 
     try {
-      await updatePage(page.id, {
-        content: page.content,
-        title: pageTitle,
-      })
+      const contentString = JSON.stringify(editorContent)
 
-      // Update the local state
-      setPage({
-        ...page,
-        title: pageTitle,
+      await updatePage(page.id, {
+        title: page.title,
+        content: contentString,
       })
 
       setHasUnsavedChanges(false)
-
-      // Refresh the page to get the updated data
+      setIsEditable(false)
       router.refresh()
     } catch (error) {
       console.error("Error saving page content:", error)
@@ -103,158 +98,69 @@ export default function PageContent({ fiscalYear, slug }: PageContentProps) {
     }
 
     setIsEditable(!isEditable)
-    setHasUnsavedChanges(false)
+    if (!isEditable) {
+      setHasUnsavedChanges(false)
+    }
   }
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPageTitle(e.target.value)
-    setHasUnsavedChanges(true)
-  }
-
-  if (loading) {
+  if (loading || !page) {
     return (
-      <div className="container mx-auto py-8 px-4">
-        <div className="flex justify-between items-center mb-6">
-          <Skeleton className="h-10 w-1/3" />
-          <Skeleton className="h-10 w-10 rounded-full" />
-        </div>
-        <Card>
-          <CardContent>
-            <Skeleton className="h-[400px] w-full" />
-          </CardContent>
-        </Card>
+      <div className="min-h-screen w-full bg-black text-white flex items-center justify-center">
+        <div className="animate-pulse">Loading...</div>
       </div>
     )
   }
 
-  if (!page) {
-    return (
-      <div className="container mx-auto py-8 px-4">
-        <div className="mb-6">
-          <Link href="/" className="flex items-center text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Home
-          </Link>
-        </div>
-        <Card>
-          <CardContent className="p-8">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold mb-2">Page Not Found</h2>
-              <p className="text-muted-foreground">
-                The page &quot;{slug}&quot; could not be found in the {fiscalYear} fiscal year.
-              </p>
-              <Button className="mt-4" asChild>
-                <Link href="/">Return to Home</Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    )
-  }
+  // Default project data if not available in the page object
+  const projectName = page.projectName || "AI Art"
+  const date = page.date || `${fiscalYear}`
 
   return (
-    <div className="min-h-screen w-full">
-      {/* Main Content */}
-      <div className="container mx-auto py-8 px-4">
-        {/* Fiscal Year Section */}
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="fiscal-year" className="text-sm font-medium whitespace-nowrap">
-                Fiscal Year
-              </Label>
-              <Select defaultValue={fiscalYear}>
-                <SelectTrigger className="w-[180px] bg-muted/50">
-                  <SelectValue placeholder="Select year" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value={fiscalYear}>{fiscalYear}</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Button variant="secondary" size="sm" className="h-8 px-4" onClick={() => router.back()}>
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back
-              </Button>
-
-              <Input className="bg-muted/50 w-[180px]" placeholder="Section name" value={pageTitle} readOnly />
-            </div>
+    <div className="min-h-screen w-full bg-black text-white">
+      {/* Header with project info and edit button */}
+      <div className="container mx-auto pt-12 px-6">
+        <div className="flex justify-between items-start">
+          <div className="space-y-1">
+            <p className="text-sm text-gray-400">Project</p>
+            <p className="text-white">{projectName}</p>
+            <p className="text-sm text-gray-400">Date</p>
+            <p className="text-white">{date}</p>
           </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            className="rounded-full bg-white text-black hover:bg-gray-200 px-6"
+            onClick={isEditable ? handleSaveContent : toggleEditMode}
+          >
+            {isEditable ? "Save" : "Edit"}
+          </Button>
         </div>
 
-        {/* Title Sections */}
-        <div className="space-y-4 mb-8">
-          <div className="rounded-md px-6 py-3 w-64">
-            {isEditable ? (
-              <Input value={pageTitle} onChange={handleTitleChange} className="font-bold text-lg" placeholder="Title" />
-            ) : (
-              <AnimatedTitle title={pageTitle} />
+        {/* Main title section */}
+        <div className="mt-24 mb-12">
+          <h1 className="text-7xl font-bold tracking-tight">{page.title}</h1>
+        </div>
+
+        {/* Editor section */}
+        <div className="mt-12 pb-24">
+          <div className="prose prose-invert max-w-none">
+            <h2 className="text-3xl font-medium mb-8">Editor</h2>
+
+            {editorContent && (
+              <PlateEditor
+                initialValue={editorContent}
+                onChange={(content) => {
+                  setEditorContent(content)
+                  setHasUnsavedChanges(true)
+                }}
+                readOnly={!isEditable}
+              />
             )}
           </div>
         </div>
-
-        {/* Editor Section */}
-        <div className="mt-8">
-          <Card className="overflow-hidden border shadow-sm">
-            <CardContent className="p-0">
-              <div className="flex items-center justify-between bg-muted/50 px-4 py-2 border-b">
-                <h3 className="font-medium">Editor</h3>
-                <div className="flex items-center gap-2">
-                  {isEditable && (
-                    <Button
-                      onClick={handleSaveContent}
-                      size="sm"
-                      className="flex items-center gap-1"
-                      disabled={!hasUnsavedChanges}
-                    >
-                      <Save className="h-4 w-4" />
-                      Save
-                    </Button>
-                  )}
-                  <Button
-                    onClick={toggleEditMode}
-                    variant={isEditable ? "outline" : "default"}
-                    className="flex items-center gap-1"
-                    size="sm"
-                  >
-                    {isEditable ? (
-                      <>
-                        <Eye className="h-4 w-4" />
-                        View
-                      </>
-                    ) : (
-                      <>
-                        <Edit className="h-4 w-4" />
-                        Edit
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </div>
-              <div className={`p-6 ${isEditable ? "bg-white dark:bg-gray-950" : "bg-white/50 dark:bg-gray-950/50"}`}>
-                <PlateEditor
-                  initialValue={page.content || ""}
-                  onChange={(content) => {
-                    setPage({ ...page, content })
-                    setHasUnsavedChanges(true)
-                  }}
-                  readOnly={!isEditable}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
-
-      {/* Unsaved Changes Notification */}
-      {isEditable && hasUnsavedChanges && (
-        <div className="fixed bottom-4 right-4 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-100 px-4 py-2 rounded-md shadow-lg">
-          You have unsaved changes
-        </div>
-      )}
     </div>
   )
 }
+
