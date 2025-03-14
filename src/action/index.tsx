@@ -218,16 +218,46 @@ export async function deleteAnnualReport(id: string) {
   return result
 }
 
+
+function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/--+/g, "-")
+    .trim();
+}
+
 // Page Actions
 export async function createPage(data: Prisma.PageCreateInput) {
-  const result = await safeDbOperation(async () => prismaClient.page.create({ data }), null, "Failed to create page")
+  const result = await safeDbOperation(async () => {
+    // Generate a slug from the title
+    let slug = generateSlug(data.title);
+
+    // Check if the slug already exists
+    let existingPage = await prismaClient.page.findUnique({ where: { slug } });
+    let suffix = 1;
+
+    // If the slug exists, append a suffix to make it unique
+    while (existingPage) {
+      slug = `${generateSlug(data.title)}-${suffix}`;
+      existingPage = await prismaClient.page.findUnique({ where: { slug } });
+      suffix++;
+    }
+
+    // Add the slug to the data
+    const pageData = { ...data, slug };
+
+    // Create the page with the unique slug
+    return await prismaClient.page.create({ data: pageData });
+  }, null, "Failed to create page");
 
   if (result) {
-    revalidatePath(`/years/${result.yearId}`)
-    revalidatePath(`/`)
+    revalidatePath(`/years/${result.yearId}`);
+    revalidatePath(`/`);
   }
 
-  return result
+  return result;
 }
 
 export async function getPageById(id: string) {

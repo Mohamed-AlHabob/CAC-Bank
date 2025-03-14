@@ -1,19 +1,15 @@
 "use client"
 
-import type React from "react"
-
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { PlateEditor } from "@/components/editor/plate-editor"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useYear } from "@/components/context/YearContext"
 import { updatePage } from "@/action"
-import { UserButton } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Edit, Eye, ArrowLeft, Save } from "lucide-react"
 import Link from "next/link"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -22,6 +18,7 @@ import AnimatedTitle from "@/components/global/AnimatedTitle"
 interface Page {
   id: string
   title: string
+  slug: string // Add slug to the interface
   content?: string | null
   isPublished: boolean
   yearId: string
@@ -30,28 +27,29 @@ interface Page {
 
 interface PageContentProps {
   fiscalYear: string
-  title: string
+  slug: string
 }
 
-export default function PageContent({ fiscalYear, title }: PageContentProps) {
+export default function PageContent({ fiscalYear, slug }: PageContentProps) {
   const { currentYear } = useYear()
   const [page, setPage] = useState<Page | null>(null)
   const [loading, setLoading] = useState(true)
   const [isEditable, setIsEditable] = useState(false)
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
-  const [pageTitle, setPageTitle] = useState(title)
+  const [pageTitle, setPageTitle] = useState("")
   const router = useRouter()
 
   useEffect(() => {
     if (currentYear) {
-      const foundPage = currentYear.pages.find((p) => p.title === title)
+      // Find the page by slug instead of title
+      const foundPage = currentYear.pages.find((p) => p.slug === slug)
       if (foundPage) {
         setPage(foundPage as Page)
         setPageTitle(foundPage.title)
       }
       setLoading(false)
     }
-  }, [currentYear, title])
+  }, [currentYear, slug])
 
   // Handle unsaved changes warning
   useEffect(() => {
@@ -67,9 +65,8 @@ export default function PageContent({ fiscalYear, title }: PageContentProps) {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload)
   }, [isEditable, hasUnsavedChanges])
 
-  // Add this after the existing useEffect hooks
+  // Reset hasUnsavedChanges when switching to view mode
   useEffect(() => {
-    // Reset hasUnsavedChanges when switching to view mode
     if (!isEditable) {
       setHasUnsavedChanges(false)
     }
@@ -94,10 +91,8 @@ export default function PageContent({ fiscalYear, title }: PageContentProps) {
 
       // Refresh the page to get the updated data
       router.refresh()
-      return Promise.resolve()
     } catch (error) {
       console.error("Error saving page content:", error)
-      return Promise.reject(error)
     }
   }
 
@@ -146,7 +141,7 @@ export default function PageContent({ fiscalYear, title }: PageContentProps) {
             <div className="text-center">
               <h2 className="text-2xl font-bold mb-2">Page Not Found</h2>
               <p className="text-muted-foreground">
-                The page &quot;{title}&quot; could not be found in the {fiscalYear} fiscal year.
+                The page &quot;{slug}&quot; could not be found in the {fiscalYear} fiscal year.
               </p>
               <Button className="mt-4" asChild>
                 <Link href="/">Return to Home</Link>
@@ -167,7 +162,7 @@ export default function PageContent({ fiscalYear, title }: PageContentProps) {
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
             <div className="flex items-center gap-2">
               <Label htmlFor="fiscal-year" className="text-sm font-medium whitespace-nowrap">
-                fiscal year
+                Fiscal Year
               </Label>
               <Select defaultValue={fiscalYear}>
                 <SelectTrigger className="w-[180px] bg-muted/50">
@@ -175,18 +170,17 @@ export default function PageContent({ fiscalYear, title }: PageContentProps) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value={fiscalYear}>{fiscalYear}</SelectItem>
-                  {/* Add more years as needed */}
                 </SelectContent>
               </Select>
             </div>
 
             <div className="flex items-center gap-2">
-              <Button variant="secondary" size="sm" className="h-8 px-4">
+              <Button variant="secondary" size="sm" className="h-8 px-4" onClick={() => router.back()}>
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back
               </Button>
 
-              <Input className="bg-muted/50 w-[180px]" placeholder="Section name" value="Section name" readOnly />
+              <Input className="bg-muted/50 w-[180px]" placeholder="Section name" value={pageTitle} readOnly />
             </div>
           </div>
         </div>
@@ -197,7 +191,7 @@ export default function PageContent({ fiscalYear, title }: PageContentProps) {
             {isEditable ? (
               <Input value={pageTitle} onChange={handleTitleChange} className="font-bold text-lg" placeholder="Title" />
             ) : (
-              <AnimatedTitle title={title} />
+              <AnimatedTitle title={pageTitle} />
             )}
           </div>
         </div>
@@ -241,7 +235,14 @@ export default function PageContent({ fiscalYear, title }: PageContentProps) {
                 </div>
               </div>
               <div className={`p-6 ${isEditable ? "bg-white dark:bg-gray-950" : "bg-white/50 dark:bg-gray-950/50"}`}>
-              <PlateEditor />
+                <PlateEditor
+                  initialValue={page.content || ""}
+                  onChange={(content) => {
+                    setPage({ ...page, content })
+                    setHasUnsavedChanges(true)
+                  }}
+                  readOnly={!isEditable}
+                />
               </div>
             </CardContent>
           </Card>
@@ -257,4 +258,3 @@ export default function PageContent({ fiscalYear, title }: PageContentProps) {
     </div>
   )
 }
-

@@ -6,12 +6,12 @@ import PageContent from "@/components/sections/sectionPage/page-content"
 interface PageProps {
   params: {
     year: string
-    title: string
+    slug: string
   }
 }
 
 export default async function Page({ params }: PageProps) {
-  const { year, title } = params
+  const { year, slug } = params
 
   // Fetch the year data
   const fiscalYear = await getYearByFiscalYear(year)
@@ -23,7 +23,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <div className="min-h-screen w-full" data-registry="plate">
       <SettingsProvider>
-        <PageContent fiscalYear={year} title={title} />
+        <PageContent fiscalYear={year} slug={slug} />
       </SettingsProvider>
     </div>
   )
