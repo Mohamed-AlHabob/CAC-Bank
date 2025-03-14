@@ -40,7 +40,7 @@ model Page {
   yearId                String
   title                 String
   isArchived            Boolean  @default(false)
-  content               String?
+  content               Json?
   initialPromotionalImage String?
   isPublished           Boolean  @default(false)
   createdAt             DateTime @default(now())

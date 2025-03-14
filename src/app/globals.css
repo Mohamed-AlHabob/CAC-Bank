@@ -436,3 +436,130 @@
   --brand: hsl(213.3 93.9% 67.8%);
   --highlight: hsl(48 96% 53%);
 }
+
+/* Editor mode styles */
+.editor-mode .slate-ToolbarButton {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.editor-mode .slate-Toolbar {
+  display: flex;
+}
+
+.editor-mode .slate-HeadingToolbar {
+  display: flex;
+}
+
+/* Viewer mode styles */
+.viewer-mode .slate-ToolbarButton,
+.plate-editor-readonly .slate-ToolbarButton {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.viewer-mode .slate-Toolbar,
+.plate-editor-readonly .slate-Toolbar {
+  display: none;
+}
+
+.viewer-mode .slate-HeadingToolbar,
+.plate-editor-readonly .slate-HeadingToolbar {
+  display: none;
+}
+
+.plate-editor-readonly [data-slate-editor="true"] {
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.plate-editor-readonly [data-slate-editor="true"]:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Make sure content is visible in readonly mode */
+.plate-editor-readonly [data-slate-editor="true"] > * {
+  display: block;
+  margin-bottom: 1em;
+}
+
+.plate-editor-readonly h1,
+.plate-editor-readonly h2,
+.plate-editor-readonly h3,
+.plate-editor-readonly h4,
+.plate-editor-readonly h5,
+.plate-editor-readonly h6 {
+  font-weight: bold;
+  line-height: 1.2;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.plate-editor-readonly h1 {
+  font-size: 2em;
+}
+
+.plate-editor-readonly h2 {
+  font-size: 1.5em;
+}
+
+.plate-editor-readonly h3 {
+  font-size: 1.25em;
+}
+
+.plate-editor-readonly p {
+  margin-bottom: 1em;
+}
+
+.plate-editor-readonly ul,
+.plate-editor-readonly ol {
+  padding-left: 2em;
+  margin-bottom: 1em;
+}
+
+.plate-editor-readonly li {
+  margin-bottom: 0.5em;
+}
+
+.plate-editor-readonly blockquote {
+  border-left: 4px solid #e2e8f0;
+  padding-left: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-style: italic;
+}
+
+.plate-editor-readonly pre {
+  background-color: #f7fafc;
+  padding: 1em;
+  border-radius: 0.25em;
+  overflow-x: auto;
+}
+
+.plate-editor-readonly code {
+  font-family: monospace;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25em;
+}
+
+.plate-editor-readonly img {
+  max-width: 100%;
+  height: auto;
+}
+
+.plate-editor-editable [data-slate-editor="true"] {
+  padding: 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  min-height: 200px;
+}
+
+.plate-editor-editable [data-slate-editor="true"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--ring));
+}
+
