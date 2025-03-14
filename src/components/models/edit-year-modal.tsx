@@ -24,8 +24,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { Textarea } from "@/components/ui/textarea"
-import { updateYear } from "@/action"
-
+import { updateYear } from "@/app/action"
 
 const formSchema = z.object({
   fiscalYear: z.string().min(1, {

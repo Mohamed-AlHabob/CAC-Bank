@@ -15,7 +15,7 @@ import { useModal } from "@/hooks/use-modal-store"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/global/spinner"
 import { AlertTriangle } from "lucide-react"
-import { deletePage } from "@/action"
+import { deletePage } from "@/app/action"
 
 export const DeletePageModal = () => {
   const { isOpen, onClose, type, data } = useModal()

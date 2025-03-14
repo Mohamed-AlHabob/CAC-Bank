@@ -22,7 +22,7 @@ import { Spinner } from "@/components/global/spinner"
 import { Textarea } from "@/components/ui/textarea"
 import { FileUpload } from "@/components/global/file-upload"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { createPage, getAllYears, getParentPages } from "@/action"
+import { createPage, getAllYears, getParentPages } from "@/app/action"
 
 const formSchema = z.object({
   title: z.string().min(1, {

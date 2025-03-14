@@ -15,7 +15,7 @@ import { useModal } from "@/hooks/use-modal-store"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/global/spinner"
 import { AlertTriangle } from "lucide-react"
-import { deleteYear } from "@/action"
+import { deleteYear } from "@/app/action"
 
 export const DeleteYearModal = () => {
   const { isOpen, onClose, type, data } = useModal()

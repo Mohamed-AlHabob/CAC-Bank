@@ -72,6 +72,74 @@ export async function getYearById(id: string): Promise<OperationResult<Year | nu
   )
 }
 
+
+// Year Actions
+export async function getAllYears(): Promise<OperationResult<Year[]>> {
+  return handleOperation(async () => {
+    return await prisma.year.findMany({
+      orderBy: { fiscalYear: "desc" },
+    });
+  }, "Failed to fetch all years");
+}
+
+export async function updateYear(
+  id: string,
+  data: Prisma.YearUpdateInput
+): Promise<OperationResult<Year>> {
+  return handleOperation(async () => {
+    const updatedYear = await prisma.year.update({
+      where: { id },
+      data,
+    });
+    revalidatePaths(["/years", `/years/${id}`, "/"]);
+    return updatedYear;
+  }, "Failed to update year");
+}
+
+export async function deleteYear(id: string): Promise<OperationResult<Year>> {
+  return handleOperation(async () => {
+    const deletedYear = await prisma.year.delete({
+      where: { id },
+    });
+    revalidatePaths(["/years", `/years/${id}`, "/"]);
+    return deletedYear;
+  }, "Failed to delete year");
+}
+
+// Page Actions
+export async function updatePage(
+  id: string,
+  data: Prisma.PageUpdateInput
+): Promise<OperationResult<Page>> {
+  return handleOperation(async () => {
+    const updatedPage = await prisma.page.update({
+      where: { id },
+      data,
+    });
+    revalidatePaths([`/years/${updatedPage.yearId}`, `/pages/${id}`, "/"]);
+    return updatedPage;
+  }, "Failed to update page");
+}
+
+export async function getParentPages(): Promise<OperationResult<Page[]>> {
+  return handleOperation(async () => {
+    return await prisma.page.findMany({
+      where: { parentId: null },
+      include: { children: true },
+    });
+  }, "Failed to fetch parent pages");
+}
+
+export async function deletePage(id: string): Promise<OperationResult<Page>> {
+  return handleOperation(async () => {
+    const deletedPage = await prisma.page.delete({
+      where: { id },
+    });
+    revalidatePaths([`/years/${deletedPage.yearId}`, `/pages/${id}`, "/"]);
+    return deletedPage;
+  }, "Failed to delete page");
+}
+
 // Annual Report Actions
 export async function createAnnualReport(
   data: Prisma.AnnualReportCreateInput

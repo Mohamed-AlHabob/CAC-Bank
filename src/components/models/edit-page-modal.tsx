@@ -23,7 +23,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { FileUpload } from "@/components/global/file-upload"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
-import { getAllYears, getParentPages, updatePage } from "@/action"
+import { getAllYears, getParentPages, updatePage } from "@/app/action"
 
 const formSchema = z.object({
   title: z.string().min(1, {
