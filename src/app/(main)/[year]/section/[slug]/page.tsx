@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation"
-import { SettingsProvider } from "@/components/editor/settings"
-import { getYearByFiscalYear } from "@/action"
 import PageContent from "@/components/sections/sectionPage/page-content"
+import { getYearByFiscalYear } from "@/app/action"
 
 interface PageProps {
   params: {
@@ -22,9 +21,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <div className="min-h-screen w-full" data-registry="plate">
-      <SettingsProvider>
         <PageContent fiscalYear={year} slug={slug} />
-      </SettingsProvider>
     </div>
   )
 }

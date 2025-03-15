@@ -37,7 +37,7 @@ const formSchema = z.object({
   fiscalYear: z.string().min(1, {
     message: "Fiscal year is required."
   }),
-  totalProfit: z.string().optional(),
+  totalProfit: z.number().optional(),
   ceosMessage: z.string().optional(),
   publication: z.date().optional(),
 });
@@ -52,7 +52,7 @@ export const CreateYearModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       fiscalYear: "",
-      totalProfit: "",
+      totalProfit: 0,
       ceosMessage: "",
       publication: undefined,
     }
@@ -65,7 +65,7 @@ export const CreateYearModal = () => {
       // Convert totalProfit to Decimal if provided
       const formattedValues = {
         fiscalYear: values.fiscalYear,
-        totalProfit: values.totalProfit ? parseFloat(values.totalProfit) : undefined,
+        totalProfit: values.totalProfit,
         ceosMessage: values.ceosMessage,
         publication: values.publication,
       };

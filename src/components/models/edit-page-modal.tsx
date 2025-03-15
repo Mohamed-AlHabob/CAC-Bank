@@ -62,7 +62,7 @@ export const EditPageModal = () => {
   useEffect(() => {
     if (page) {
       form.setValue("title", page.title)
-      form.setValue("content", page.content || "")
+      form.setValue("content", typeof page.content === "string" ? page.content : "")
       form.setValue("initialPromotionalImage", page.initialPromotionalImage || "")
       form.setValue("yearId", page.yearId)
       form.setValue("parentPageId", page.parentPageId || "")

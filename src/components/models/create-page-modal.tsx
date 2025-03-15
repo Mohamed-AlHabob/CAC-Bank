@@ -100,11 +100,12 @@ export const CreatePageModal = () => {
         },
         ...(values.parentPageId && values.parentPageId !== "none"
           ? {
-              parentPage: {
-                connect: { id: values.parentPageId },
-              },
-            }
+            parentPage: {
+              connect: { id: values.parentPageId },
+            },
+          }
           : {}),
+        slug: ""
       })
 
       form.reset()

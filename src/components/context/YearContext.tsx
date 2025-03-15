@@ -1,6 +1,6 @@
 "use client";
-import { createContext, useContext, useState, ReactNode } from 'react';
-import { Year, Page } from '@prisma/client';
+import { createContext, useContext, useState, ReactNode } from "react";
+import { Year, Page } from "@prisma/client";
 
 interface YearContextType {
   currentYear: YearWithPages | null;
@@ -18,9 +18,9 @@ export const YearProvider = ({
   initialYear,
 }: {
   children: ReactNode;
-  initialYear: YearWithPages;
+  initialYear: YearWithPages | null;
 }) => {
-  const [currentYear, setCurrentYear] = useState<YearWithPages>(initialYear);
+  const [currentYear, setCurrentYear] = useState<YearWithPages | null>(initialYear);
 
   const changeYear = (year: YearWithPages) => setCurrentYear(year);
 
@@ -33,6 +33,6 @@ export const YearProvider = ({
 
 export const useYear = () => {
   const context = useContext(YearContext);
-  if (!context) throw new Error('useYear must be used within a YearProvider');
+  if (!context) throw new Error("useYear must be used within a YearProvider");
   return context;
 };

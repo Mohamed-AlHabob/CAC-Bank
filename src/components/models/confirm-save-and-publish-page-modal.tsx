@@ -15,7 +15,7 @@ import { useModal } from "@/hooks/use-modal-store"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/global/spinner"
 import { CheckCircle } from "lucide-react"
-import { publishPage } from "@/action"
+import { publishPage } from "@/app/action"
 
 export const ConfirmSaveAndPublishPageModal = () => {
   const { isOpen, onClose, type, data } = useModal()
@@ -85,4 +85,5 @@ export const ConfirmSaveAndPublishPageModal = () => {
     </Dialog>
   )
 }
+
 

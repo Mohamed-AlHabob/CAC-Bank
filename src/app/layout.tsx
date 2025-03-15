@@ -2,13 +2,13 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
-import { ThemeProvider } from "next-themes"
 import { Toaster } from "sonner"
 import { ClerkProvider } from "@clerk/nextjs"
 import { YearProvider } from "@/components/context/YearContext"
-import { getLatestYearWithPages } from "@/action"
 import { ModalProvider } from "@/components/providers/modal-provider"
 import Header from "@/components/sections/header/header"
+import { getLatestYearWithPages } from "./action"
+import { ThemeProvider } from "@/components/providers/theme-provider"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,9 +30,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  // Fetch the latest year with pages
+ 
   const initialYear = await getLatestYearWithPages()
-
   return (
     <ClerkProvider>
       <html lang="en">

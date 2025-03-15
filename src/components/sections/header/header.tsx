@@ -27,8 +27,9 @@ const background = {
 
 export default function Header() {
   const [isActive, setIsActive] = useState(false)
+  
   return (
-    <header className="fixed w-full box-border p-2.5 md:p-5 ">
+    <header className=" w-full box-border p-2.5 md:p-5">
       <div className="flex justify-center items-center relative uppercase text-xs md:text-sm font-normal">
         <Link href="/" className="absolute left-0 no-underline flex items-center gap-2">
           <Mountain className="h-8 w-8" />

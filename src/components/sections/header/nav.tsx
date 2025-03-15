@@ -108,7 +108,7 @@ export default function Nav() {
           <div className="mt-10 lg:mt-20">
             {currentYear?.pages.map((item, index) => (
               <div key={`section_${index}`} className="mb-6">
-                <Link href={`/${currentYear.fiscalYear}/section/${item.title}`}>
+                <Link href={`/${currentYear.fiscalYear}/section/${item.slug}`}>
                   <motion.p
                     onMouseOver={() => {
                       setSelectedLink({ isActive: true, index })

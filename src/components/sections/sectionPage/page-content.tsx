@@ -1,11 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
 import { PlateEditor } from "@/components/editor/plate-editor"
 import { useYear } from "@/components/context/YearContext"
-import { updatePage } from "@/action"
 import { Button } from "@/components/ui/button"
+import { useModal } from "@/hooks/use-modal-store"
+import { savePage } from "@/app/action"
+import { Spinner } from "@/components/global/spinner"
+import { Check, Edit, Save } from 'lucide-react'
 
 interface Page {
   id: string
@@ -24,14 +26,23 @@ interface PageContentProps {
   slug: string
 }
 
+// Default content to use if none exists
+const DEFAULT_CONTENT = [
+  {
+    type: 'p',
+    children: [{ text: 'Add your content here...' }],
+  },
+];
+
 export default function PageContent({ fiscalYear, slug }: PageContentProps) {
   const { currentYear } = useYear()
+  const { onOpen } = useModal()
   const [page, setPage] = useState<Page | null>(null)
   const [loading, setLoading] = useState(true)
-  const [isEditable, setIsEditable] = useState(false)
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
-  const [editorContent, setEditorContent] = useState<any>(null)
-  const router = useRouter()
+  const [isEditing, setIsEditing] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveSuccess, setSaveSuccess] = useState(false)
+  const [editorContent, setEditorContent] = useState<any[]>(DEFAULT_CONTENT)
 
   useEffect(() => {
     if (currentYear) {
@@ -39,128 +50,156 @@ export default function PageContent({ fiscalYear, slug }: PageContentProps) {
       if (foundPage) {
         setPage(foundPage as Page)
 
-        // Parse content if it exists
+        // Parse the content if it exists
         if (foundPage.content) {
           try {
             const parsedContent = JSON.parse(foundPage.content)
-            setEditorContent(parsedContent)
+            
+            // Ensure we have an array of content
+            if (Array.isArray(parsedContent)) {
+              setEditorContent(parsedContent)
+            } else if (parsedContent && parsedContent.editor && Array.isArray(parsedContent.editor.children)) {
+              setEditorContent(parsedContent.editor.children)
+            } else {
+              console.warn("Content is not in expected format, using default")
+              setEditorContent(DEFAULT_CONTENT)
+            }
           } catch (e) {
-            // If content is not valid JSON, use it as a simple text
-            setEditorContent([
-              {
-                type: "p",
-                children: [{ text: foundPage.content }],
-              },
-            ])
+            console.error("Error parsing page content:", e)
+            // Fallback to default content
+            setEditorContent(DEFAULT_CONTENT)
           }
+        } else {
+          // No content, use default
+          setEditorContent(DEFAULT_CONTENT)
         }
       }
       setLoading(false)
     }
   }, [currentYear, slug])
 
-  useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (isEditable && hasUnsavedChanges) {
-        e.preventDefault()
-        e.returnValue = ""
-        return ""
-      }
-    }
+  const handleEditClick = () => {
+    setIsEditing(true)
+  }
 
-    window.addEventListener("beforeunload", handleBeforeUnload)
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload)
-  }, [isEditable, hasUnsavedChanges])
-
-  const handleSaveContent = async () => {
+  const handleSaveClick = async () => {
     if (!page) return
 
+    setIsSaving(true)
     try {
-      const contentString = JSON.stringify(editorContent)
+      const contentToSave = Array.isArray(editorContent) ? editorContent : DEFAULT_CONTENT
+    
+      const contentString = JSON.stringify(contentToSave)
 
-      await updatePage(page.id, {
-        title: page.title,
-        content: contentString,
-      })
+      const result = await savePage(page.id, contentString)
 
-      setHasUnsavedChanges(false)
-      setIsEditable(false)
-      router.refresh()
+      if (result.success) {
+        setPage({
+          ...page,
+          content: contentString,
+        })
+
+        setSaveSuccess(true)
+        setTimeout(() => {
+          setSaveSuccess(false)
+          setIsEditing(false)
+        }, 1500)
+      }
     } catch (error) {
-      console.error("Error saving page content:", error)
+      console.error("Error saving page:", error)
+    } finally {
+      setIsSaving(false)
     }
   }
 
-  const toggleEditMode = () => {
-    if (isEditable && hasUnsavedChanges) {
-      const confirm = window.confirm("You have unsaved changes. Are you sure you want to exit edit mode?")
-      if (!confirm) return
-    }
+  const handlePublishClick = () => {
+    if (!page) return
 
-    setIsEditable(!isEditable)
-    if (!isEditable) {
-      setHasUnsavedChanges(false)
+    onOpen("confirmSaveAndPublishPage", { page })
+  }
+
+  const handleEditorChange = (value: any) => {
+    console.log("Editor onChange value:", value)
+    
+    if (Array.isArray(value)) {
+      setEditorContent(value)
+    } else {
+      console.warn("Editor returned non-array value:", value)
+      if (value && Array.isArray(value.children)) {
+        setEditorContent(value.children)
+      }
     }
   }
 
   if (loading || !page) {
     return (
-      <div className="min-h-screen w-full bg-black text-white flex items-center justify-center">
+      <div className="min-h-screen w-full bg-background text-white flex items-center justify-center">
         <div className="animate-pulse">Loading...</div>
       </div>
     )
   }
 
-  // Default project data if not available in the page object
   const projectName = page.projectName || "AI Art"
   const date = page.date || `${fiscalYear}`
 
   return (
-    <div className="min-h-screen w-full bg-black text-white">
-      {/* Header with project info and edit button */}
-      <div className="container mx-auto pt-12 px-6">
-        <div className="flex justify-between items-start">
+    <div className="min-h-screen w-full bg-background dark:bg-foreground">
+      <div className="container mx-auto px-6">
+        <div className="flex justify-between items-start pt-6">
           <div className="space-y-1">
-            <p className="text-sm text-gray-400">Project</p>
-            <p className="text-white">{projectName}</p>
+            <p className="text-sm ">Project</p>
+            <p className="">{projectName}</p>
             <p className="text-sm text-gray-400">Date</p>
-            <p className="text-white">{date}</p>
+            <p className="">{date}</p>
           </div>
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="rounded-full bg-white text-black hover:bg-gray-200 px-6"
-            onClick={isEditable ? handleSaveContent : toggleEditMode}
-          >
-            {isEditable ? "Save" : "Edit"}
-          </Button>
+          <div className="flex gap-2">
+            {isEditing ? (
+              <>
+                <Button
+                  onClick={handleSaveClick}
+                  variant="outline"
+                  size="sm"
+                  className="rounded-full hover:bg-gray-200 px-6"
+                  disabled={isSaving || saveSuccess}
+                >
+                  {isSaving ? (
+                    <Spinner className="mr-2 h-4 w-4" />
+                  ) : saveSuccess ? (
+                    <Check className="mr-2 h-4 w-4 text-green-500" />
+                  ) : (
+                    <Save className="mr-2 h-4 w-4" />
+                  )}
+                  {isSaving ? "Saving..." : saveSuccess ? "Saved" : "Save"}
+                </Button>
+                {!page.isPublished && (
+                  <Button onClick={handlePublishClick} variant="primary" size="sm" className="rounded-full px-6">
+                    Publish
+                  </Button>
+                )}
+              </>
+            ) : (
+              <Button
+                onClick={handleEditClick}
+                variant="outline"
+                size="sm"
+                className="rounded-full hover:bg-gray-200 px-6"
+              >
+                <Edit className="mr-2 h-4 w-4" />
+                Edit
+              </Button>
+            )}
+          </div>
         </div>
 
-        {/* Main title section */}
         <div className="mt-24 mb-12">
           <h1 className="text-7xl font-bold tracking-tight">{page.title}</h1>
         </div>
 
-        {/* Editor section */}
-        <div className="mt-12 pb-24">
-          <div className="prose prose-invert max-w-none">
-            <h2 className="text-3xl font-medium mb-8">Editor</h2>
-
-            {editorContent && (
-              <PlateEditor
-                initialValue={editorContent}
-                onChange={(content) => {
-                  setEditorContent(content)
-                  setHasUnsavedChanges(true)
-                }}
-                readOnly={!isEditable}
-              />
-            )}
-          </div>
+        <div className="min-h-[50vh] bg-background dark:bg-foreground">
+          <PlateEditor content={editorContent} editable={isEditing} onChange={handleEditorChange} />
         </div>
       </div>
     </div>
   )
 }
-

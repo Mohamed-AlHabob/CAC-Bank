@@ -1,11 +1,10 @@
-import { Hero } from "@/components/sections/hero";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-background">
-    <div className="pt-72">
+    {/* <div className="pt-72">
         <Hero />
-    </div>
+    </div> */}
   </main>
   );
 }

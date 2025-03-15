@@ -12,7 +12,7 @@ datasource db {
 model Year {
   id           String   @id @default(uuid())
   fiscalYear   String   @unique
-  totalProfit  Decimal?
+  totalProfit  Int?
   ceosMessage  String?
   dateCreated  DateTime @default(now())
   publication  DateTime?

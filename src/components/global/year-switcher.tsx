@@ -18,13 +18,14 @@ import { useModal } from "@/hooks/use-modal-store";
 
 export function YearSwitcher() {
   const { currentYear, changeYear } = useYear();
+
   const { onOpen } = useModal();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button className="w-fit px-3 min-w-28 flex items-center justify-between gap-2">
           <span className="truncate font-semibold">
-            {currentYear?.fiscalYear || "Select Year"} {/* Graceful fallback */}
+            {currentYear?.fiscalYear || "Select Year"}
           </span>
           <ChevronDown className="size-4 opacity-50" />
         </Button>
