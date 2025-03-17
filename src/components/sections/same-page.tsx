@@ -5,6 +5,7 @@ import { useScroll, useTransform, motion, MotionStyle } from "framer-motion";
 import { useRef } from "react";
 import Image from 'next/image';
 import { Chart } from "../global/Chart";
+import { useYear } from "../context/YearContext";
 
 const animationOrder = {
   initial: 0,
@@ -26,6 +27,7 @@ const animationOrder = {
 
 export const SamePage = () => {
   const targetRef = useRef<HTMLDivElement | null>(null);
+  const { currentYear } = useYear();
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start end", "end end"],
@@ -173,7 +175,7 @@ export const SamePage = () => {
               src="https://unsplash.com/photos/sibVwORYqs0/download?force=true&w=128&h=128"
             /> */}
             <motion.span
-              className="mt-3 block text-2xl text-white"
+              className="mt-3 block text-2xl"
               style={{ opacity: newBranchOpacity }}
             >
               <BranchIcon className="mr-3 inline-block h-12 w-12" />
@@ -198,24 +200,24 @@ export const SamePage = () => {
               <Chart/>
             </motion.div>
             <motion.span
-              className="mt-3 block text-2xl text-white"
+              className="mt-3 block text-2xl"
               style={{ opacity: newBranchOpacity }}
             >
               <BranchIcon className="mr-3 inline-block h-12 w-12" /> 
-              2025
+              {currentYear?.fiscalYear}
             </motion.span>
           </motion.div>
 
           <motion.p
-            className="translate-y-centered-offset absolute top-1/2 left-[calc(50%-60rem)] w-[50rem] pl-18 text-2xl leading-tight text-white"
+            className="translate-y-centered-offset absolute top-1/2 left-[calc(50%-60rem)] w-[50rem] pl-18 text-2xl leading-tight"
             style={stylesWithCssVar({
               opacity: endTextOpacity,
               "--y": endTexty,
             }) as MotionStyle}
           >
-            <span className="text-primary">Financial farewell statistics</span>
+            <span className="">Financial farewell statistics</span>
             <br />
-            during the year 2025.
+            during the year {currentYear?.fiscalYear}.
           </motion.p>
         </div>
         <motion.p
@@ -224,7 +226,7 @@ export const SamePage = () => {
             "--y": paragraph1TranslateY,
             position,
           }) as MotionStyle}
-          className="translate-y-centered-offset top-1/2 left-[20px] w-[300px] pl-16 text-2xl leading-tight text-white"
+          className="translate-y-centered-offset top-1/2 left-[20px] w-[300px] pl-16 text-2xl leading-tight "
         >
           The numbers speak for us,
           <br />
@@ -236,7 +238,7 @@ export const SamePage = () => {
             "--y": paragraph2TranslateY,
             position,
           }) as MotionStyle}
-          className="translate-y-centered-offset top-1/2 right-[20px] w-[300px] pr-16 text-xl leading-tight text-white"
+          className="translate-y-centered-offset top-1/2 right-[20px] w-[300px] pr-16 text-xl leading-tight"
         >
           Develop, learn and build a ready team.
           <br />

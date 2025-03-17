@@ -7,7 +7,7 @@ import { ClerkProvider } from "@clerk/nextjs"
 import { YearProvider } from "@/components/context/YearContext"
 import { ModalProvider } from "@/components/providers/modal-provider"
 import Header from "@/components/sections/header/header"
-import { getLatestYearWithPages } from "./action"
+import { getAllYearsWithPages, getLatestYearWithPages } from "./action"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 
 const geistSans = Geist({
@@ -30,15 +30,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
- 
-  const initialYear = await getLatestYearWithPages()
+  const years = await getAllYearsWithPages();
+  const initialYear = years[0] || null;
+
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased custom-scrollbar`}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <YearProvider initialYear={initialYear}>
-              <Header />
+              <Header years={years} />
               {children}
               <ModalProvider />
             </YearProvider>

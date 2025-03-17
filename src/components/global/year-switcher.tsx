@@ -12,14 +12,20 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import { Button } from "../ui/button";
 import { useYear } from "../context/YearContext";
 import { useModal } from "@/hooks/use-modal-store";
+import { YearWithPages } from "../context/YearContext";
 
-export function YearSwitcher() {
+interface YearSwitcherProps {
+  years: YearWithPages[];
+}
+
+export function YearSwitcher({ years }: YearSwitcherProps) {
   const { currentYear, changeYear } = useYear();
-
   const { onOpen } = useModal();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,6 +36,7 @@ export function YearSwitcher() {
           <ChevronDown className="size-4 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
+
       <DropdownMenuContent
         className="w-64 rounded-lg"
         align="start"
@@ -40,20 +47,29 @@ export function YearSwitcher() {
           Available Years
         </DropdownMenuLabel>
 
-        {/* {years.map((year, index) => (
-          <DropdownMenuItem
-            key={year.id} 
-            onClick={() => changeYear(year)}
-            className="gap-2 p-2"
-          >
-            {year.fiscalYear}
-            <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+        {years.length > 0 ? (
+          years.map((year, index) => (
+            <DropdownMenuItem
+              key={year.id}
+              onClick={() => changeYear(year)}
+              className="gap-2 p-2"
+            >
+              {year.fiscalYear}
+              <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          ))
+        ) : (
+          <DropdownMenuItem disabled className="gap-2 p-2 opacity-50">
+            No years available
           </DropdownMenuItem>
-        ))} */}
+        )}
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className="gap-2 p-2"  onClick={() => onOpen("createYear")}>
+        <DropdownMenuItem
+          className="gap-2 p-2"
+          onClick={() => onOpen("createYear")}
+        >
           <div className="flex size-6 items-center justify-center rounded-md border bg-background">
             <Plus className="size-4" />
           </div>

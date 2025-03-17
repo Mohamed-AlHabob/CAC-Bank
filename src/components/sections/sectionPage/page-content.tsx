@@ -8,6 +8,7 @@ import { useModal } from "@/hooks/use-modal-store"
 import { savePage } from "@/app/action"
 import { Spinner } from "@/components/global/spinner"
 import { Check, Edit, Save } from 'lucide-react'
+import { motion } from "framer-motion"
 
 interface Page {
   id: string
@@ -142,15 +143,35 @@ export default function PageContent({ fiscalYear, slug }: PageContentProps) {
   const projectName = page.projectName || "AI Art"
   const date = page.date || `${fiscalYear}`
 
+
+  const translate = {
+    initial: {
+      y: "100%",
+      opacity: 0,
+    },
+    enter: (i: never[]) => ({
+      y: 0,
+      opacity: 1,
+      transition: { duration: 1, ease: [0.76, 0, 0.24, 1], delay: i[0] },
+    }),
+    exit: (i: never[]) => ({
+      y: "100%",
+      opacity: 0,
+      transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: i[1] },
+    }),
+  }
+
   return (
     <div className="min-h-screen w-full bg-background dark:bg-foreground">
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-start pt-6">
-          <div className="space-y-1">
-            <p className="text-sm ">Project</p>
-            <p className="">{projectName}</p>
-            <p className="text-sm text-gray-400">Date</p>
-            <p className="">{date}</p>
+          <div className="space-y-3">
+            <motion.li custom={[0.3, 0]} variants={translate} initial="initial" animate="enter" exit="exit">
+                <span className="text-[#9f9689] text-lg">Fiscal Year:</span> {fiscalYear}
+            </motion.li>
+            {/* <motion.li custom={[0.3, 0]} variants={translate} initial="initial" animate="enter" exit="exit">
+                <span className="text-[#9f9689] text-lg">Fiscal Year:</span> {fiscalYear}
+            </motion.li> */}
           </div>
 
           <div className="flex gap-2">
@@ -160,7 +181,7 @@ export default function PageContent({ fiscalYear, slug }: PageContentProps) {
                   onClick={handleSaveClick}
                   variant="outline"
                   size="sm"
-                  className="rounded-full hover:bg-gray-200 px-6"
+                  className="rounded-full px-6"
                   disabled={isSaving || saveSuccess}
                 >
                   {isSaving ? (
@@ -183,7 +204,7 @@ export default function PageContent({ fiscalYear, slug }: PageContentProps) {
                 onClick={handleEditClick}
                 variant="outline"
                 size="sm"
-                className="rounded-full hover:bg-gray-200 px-6"
+                className="rounded-full px-6"
               >
                 <Edit className="mr-2 h-4 w-4" />
                 Edit

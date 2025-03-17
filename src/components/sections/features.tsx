@@ -4,9 +4,11 @@ import { useScroll, useTransform, motion, MotionStyle } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
 import { Chart } from "../global/Chart";
+import { useYear } from "../context/YearContext";
 
 export const Features = () => {
   const targetRef = useRef<HTMLDivElement | null>(null);
+    const { currentYear } = useYear();
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start end", "end end"],
@@ -52,13 +54,23 @@ export const Features = () => {
     [0.7, 0.8, 0.9],
     ["30px", "0px", "-30px"]
   );
+
   const height = useTransform(scrollYProgress, [0, 0.9], [50, 0]);
 
   return (
     <section
       ref={targetRef}
-      className="flex h-[500vh] flex-col items-center justify-start"
+      className="flex h-[500vh] flex-col items-center justify-start bg-foreground relative"
     >
+      <div className="sticky top-0 z-20 w-full  backdrop-blur-md py-6">
+        <div className="max-w-5xl mx-auto px-6 text-center">
+          <p className="mt-20 text-2xl text-white dark:text-black">
+            &quot;{currentYear?.ceosMessage}.&quot;
+          </p>
+          <p className="mt-2 text-gray-500 italic">— Dr. Ibrahim Al-Houthi {currentYear?.fiscalYear}</p>
+        </div>
+      </div>
+
       <div className="sticky top-[16.7vh] h-[66.8vh] px-16 text-2xl leading-[1] [&_p]:w-[45rem] [&_p]:max-w-[90%]">
         <motion.div style={{ x, scale }} className="relative h-full">
           <motion.figure style={{ opacity }} className="h-full">
@@ -88,9 +100,9 @@ export const Features = () => {
             opacity: text1Opacity,
             "--y": text1Y,
           }) as MotionStyle}
-          className="translate-y-centered-offset absolute top-1/2 left-0"
+          className="translate-y-centered-offset absolute top-1/2 left-0 text-white dark:text-black"
         >
-          <span className="text-primary">Preconfigured environments</span>
+          <span >Preconfigured environments</span>
           <br />
           We detect your environment so you don&apos;t need to fiddle with
           configuration files.
@@ -100,9 +112,9 @@ export const Features = () => {
             opacity: text2Opacity,
             "--y": text2Y,
           }) as MotionStyle}
-          className="translate-y-centered-offset absolute top-1/2 left-0"
+          className="translate-y-centered-offset absolute top-1/2 left-0 text-white dark:text-black"
         >
-          <span className="text-primary">Command Palette</span>
+          <span>Command Palette</span>
           <br />
           Access and complete any action in seconds with the command palette.
         </motion.p>
@@ -111,14 +123,15 @@ export const Features = () => {
             opacity: text3Opacity,
             "--y": text3Y,
           }) as MotionStyle}
-          className="translate-y-centered-offset absolute top-1/2 left-0"
+          className="translate-y-centered-offset absolute top-1/2 left-0 text-white dark:text-black"
         >
-          <span className="text-primary">Devtools</span>
+          <span>Devtools</span>
           <br />
           We&apos;ve bundled useful tools to help you get your work done faster and
           more efficiently.
         </motion.p>
       </div>
+      {/* --- Background Transition Element --- */}
       <motion.div style={{ height }} className="relative mt-[100px]">
         <div className="absolute h-[1550%] w-[120%] left-[-10%] rounded-b-[50%] bg-accent-foreground z-10 shadow-[0px_60px_50px_rgba(0,0,0,0.748)]"></div>
       </motion.div>

@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useState, ReactNode } from "react";
-import { Year, Page } from "@prisma/client";
+import { Year, Page, AnnualReport } from "@prisma/client";
 
 interface YearContextType {
   currentYear: YearWithPages | null;
@@ -9,6 +9,7 @@ interface YearContextType {
 
 export interface YearWithPages extends Year {
   pages: Page[];
+  AnnualReport :AnnualReport[]
 }
 
 const YearContext = createContext<YearContextType | undefined>(undefined);

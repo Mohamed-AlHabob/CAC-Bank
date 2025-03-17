@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/global/ModeToggle"
 import { useYear } from "@/components/context/YearContext"
 import { useModal } from "@/hooks/use-modal-store"
+import Image from "next/image"
 
-// Animation variants
+// Animation variants (unchanged)
 const height = {
   initial: {
     height: 0,
@@ -71,7 +72,7 @@ const opacity = {
   },
 }
 
-export default function Nav() {
+export default function Nav({ setIsActive }: { isActive: boolean }) {
   const [selectedLink, setSelectedLink] = useState({ isActive: false, index: 0 })
   const { currentYear } = useYear();
   const { onOpen } = useModal();
@@ -101,14 +102,14 @@ export default function Nav() {
       initial="initial"
       animate="enter"
       exit="exit"
-      className="overflow-hidden bg-background"
+      className="overflow-hidden"
     >
       <div className="flex flex-col lg:flex-row lg:justify-between gap-12 mb-20 lg:mb-0 p-6">
         <div className="flex flex-col justify-between">
           <div className="mt-10 lg:mt-20">
             {currentYear?.pages.map((item, index) => (
               <div key={`section_${index}`} className="mb-6">
-                <Link href={`/${currentYear.fiscalYear}/section/${item.slug}`}>
+                <Link href={`/${currentYear.fiscalYear}/section/${item.slug}`} onClick={() => { setIsActive(false) }}>
                   <motion.p
                     onMouseOver={() => {
                       setSelectedLink({ isActive: true, index })
@@ -124,13 +125,14 @@ export default function Nav() {
                   </motion.p>
                 </Link>
 
-                {/* {item.parentPageId.map((child, childIndex) => (
-                  <Link href="#" key={`child_${index}_${childIndex}`}>
+                {/* Display children pages if they exist */}
+                {item.childrenPages && item.childrenPages.map((child, childIndex) => (
+                  <Link href={`/${currentYear.fiscalYear}/section/${child.slug}`} key={`child_${index}_${childIndex}`}>
                     <p className="flex overflow-hidden text-lg lg:text-xl pr-8 pt-2 font-light ml-6 uppercase m-0">
-                      {child}
+                      {getChars(child.title)}
                     </p>
                   </Link>
-                ))} */}
+                ))}
               </div>
             ))}
           </div>
@@ -181,7 +183,14 @@ export default function Nav() {
             animate={selectedLink.isActive ? "open" : "closed"}
             className="w-[300px] h-[300px] lg:w-[500px] lg:h-[450px] relative bg-gray-200 rounded-lg"
           >
-            <div className="absolute inset-0 flex items-center justify-center text-gray-600">Image</div>
+            {currentYear?.pages[selectedLink.index]?.initialPromotionalImage && (
+              <Image
+                src={currentYear.pages[selectedLink.index].initialPromotionalImage || ''}
+                alt="Promotional"
+                fill
+                className="absolute inset-0 w-full h-full object-cover rounded-lg"
+              />
+            )}
           </motion.div>
 
           <div className="mt-6">
@@ -192,4 +201,3 @@ export default function Nav() {
     </motion.div>
   )
 }
-

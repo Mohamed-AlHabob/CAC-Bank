@@ -1,7 +1,6 @@
-"use client"
+"use client";
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
-
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
@@ -9,45 +8,47 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
+import { Year } from "@prisma/client";
 
-const chartData = [
-  { month: "2020", desktop: 186, mobile: 80 },
-  { month: "2021", desktop: 305, mobile: 200 },
-  { month: "2022", desktop: 237, mobile: 120 },
-  { month: "2023", desktop: 73, mobile: 190 },
-  { month: "2024", desktop: 209, mobile: 130 },
-  { month: "2025", desktop: 214, mobile: 140 },
-]
+interface YearsProps {
+  allYears?: Year[];
+  className?: string;
+}
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "#2563eb",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "#60a5fa",
-  },
-} satisfies ChartConfig
+const defaultData = [
+  { fiscalYear: "2020", totalProfit: 186 },
+  { fiscalYear: "2021", totalProfit: 305 },
+  { fiscalYear: "2022", totalProfit: 237 },
+  { fiscalYear: "2023", totalProfit: 73 },
+  { fiscalYear: "2024", totalProfit: 209 },
+  { fiscalYear: "2025", totalProfit: 214 },
+];
 
-export function Chart() {
+const chartConfig: ChartConfig = {
+};
+
+export function Chart({ allYears, className = "" }: YearsProps) {
+  const chartData = allYears?.map((year) => ({
+    fiscalYear: year.fiscalYear,
+    totalProfit: year.totalProfit, 
+  })) || defaultData;
+
   return (
-    <ChartContainer config={chartConfig} className=" h-full w-full">
-      <BarChart accessibilityLayer data={chartData}>
-        <CartesianGrid vertical={false} />
+    <ChartContainer config={chartConfig} className={`h-full w-full ${className}`}>
+      <BarChart data={chartData}>
+        <CartesianGrid vertical={false} strokeDasharray="3 3" />
         <XAxis
-          dataKey="month"
+          dataKey="fiscalYear"
           tickLine={false}
           tickMargin={10}
           axisLine={false}
-          tickFormatter={(value) => value.slice(0, 3)}
+          tickFormatter={(value: string) => value.slice(2)}
         />
+        <Bar dataKey="totalProfit" fill="#4F46E5" radius={[4, 4, 0, 0]} />
         <ChartTooltip content={<ChartTooltipContent />} />
         <ChartLegend content={<ChartLegendContent />} />
-        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-        <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
       </BarChart>
     </ChartContainer>
-  )
+  );
 }

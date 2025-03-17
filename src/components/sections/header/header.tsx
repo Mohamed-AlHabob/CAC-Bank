@@ -2,34 +2,21 @@
 
 import Link from "next/link"
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { AnimatePresence } from "framer-motion"
 import Nav from "./nav"
 import { File, Menu, Mountain, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { YearSwitcher } from "@/components/global/year-switcher"
+import { YearWithPages } from "@/components/context/YearContext"
 
-// Animation variants
-const transition = { duration: 1, ease: [0.76, 0, 0.24, 1] }
-
-const background = {
-  initial: {
-    height: 0,
-  },
-  open: {
-    height: "100vh",
-    transition,
-  },
-  closed: {
-    height: 0,
-    transition,
-  },
+interface HeaderProps {
+  years: YearWithPages[];
 }
-
-export default function Header() {
+export default function Header({ years }: HeaderProps) {
   const [isActive, setIsActive] = useState(false)
-  
+
   return (
-    <header className=" w-full box-border p-2.5 md:p-5">
+    <header className="sticky top-0 z-50 w-full box-border p-2.5 md:p-5 backdrop-blur-md">
       <div className="flex justify-center items-center relative uppercase text-xs md:text-sm font-normal">
         <Link href="/" className="absolute left-0 no-underline flex items-center gap-2">
           <Mountain className="h-8 w-8" />
@@ -51,18 +38,10 @@ export default function Header() {
         <div
           className="absolute right-0 flex items-center justify-center gap-2 cursor-pointer"
         >
-        <YearSwitcher/>
+        <YearSwitcher years={years} />
         </div>
       </div>
-
-      <motion.div
-        variants={background}
-        initial="initial"
-        animate={isActive ? "open" : "closed"}
-        className="absolute left-0 top-full w-full bg-black bg-opacity-50"
-      />
-
-      <AnimatePresence mode="wait">{isActive && <Nav />}</AnimatePresence>
+      <AnimatePresence mode="wait">{isActive && <Nav setIsActive={setIsActive} isActive={false} />}</AnimatePresence>
     </header>
   )
 }

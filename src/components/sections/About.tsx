@@ -32,7 +32,7 @@ const About = () => {
       <div className="relative mb-8 mt-36 flex flex-col items-center gap-5">
         <AnimatedTitle
           title="CEO<b>'</b>s <br /> Message of the <b>a</b>Year"
-          containerClass="mt-5 text-center"
+          className="text-center"
         />
 
         <div className="about-subtext">
@@ -46,7 +46,7 @@ const About = () => {
       <div className="h-dvh w-screen" id="clip">
         <div className="mask-clip-path about-image">
           <Image
-            src="/about.webp"
+            src="https://3bp7blr8r1.ufs.sh/f/dNJm0guSuQfgB1AuUkSJ3PGs4lpjF8e5SIvENynmoKBkU0fD"
             width={1920}
             height={1080}
             alt="Background"

@@ -55,7 +55,7 @@ export async function getAllYearsWithPages() {
     async () => {
       return await prisma.year.findMany({
         orderBy: { dateCreated: "desc" },
-        include: { pages: true },
+        include: { pages: true, annualReports: true },
       })
     },
     [],

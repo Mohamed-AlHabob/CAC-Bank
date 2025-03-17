@@ -72,14 +72,13 @@ export const Collaboration = () => {
     <section ref={targetRef} className="relative z-10 mt-[-30vh] h-[300vh]">
       <div ref={extendedRef} className="mb-[-120vh] h-[420vh] w-full">
         <div className="sticky top-[10vh]">
-          {/* <div className="flex justify-center">
+          <div className="flex justify-center">
             <motion.div style={{ scale, x, y }} className="origin-top">
               <motion.img
                 style={{ opacity }}
                 src="/main-screen.svg"
                 className="h-auto max-h-none w-[70vw]"
               />
-               <Chart/>
               <motion.div
                 style={{ opacity: avatarGroupOpacity, x: avatarGroupX }}
                 className="absolute right-[10%] top-[1.5%] flex gap-2"
@@ -101,7 +100,7 @@ export const Collaboration = () => {
                 />
               </motion.div>
             </motion.div>
-          </div> */}
+          </div>
         </div>
       </div>
     </section>
