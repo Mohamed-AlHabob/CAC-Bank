@@ -133,8 +133,43 @@ export default function Nav({ setIsActive }: { isActive: boolean }) {
                     </p>
                   </Link>
                 ))}
+                
               </div>
             ))}
+              <div className="mb-6">
+                <Link href={`/${currentYear?.fiscalYear}/structure`} onClick={() => { setIsActive(false) }}>
+                  <motion.p
+                    onMouseOver={() => {
+                      setSelectedLink({ isActive: true, index: 565 })
+                    }}
+                    onMouseLeave={() => {
+                      setSelectedLink({ isActive: false, index: 565 })
+                    }}
+                    variants={blur}
+                    animate={selectedLink.isActive && selectedLink.index !== 565 ? "open" : "closed"}
+                    className="flex overflow-hidden text-3xl lg:text-5xl pr-8 lg:pr-8 pt-2.5 font-light uppercase m-0"
+                  >
+                   structure
+                  </motion.p>
+                </Link>
+              </div>
+              <div className="mb-6">
+              <Link href={`/${currentYear?.fiscalYear}/analysis`} onClick={() => { setIsActive(false) }}>
+                  <motion.p
+                    onMouseOver={() => {
+                      setSelectedLink({ isActive: true, index: 8575 })
+                    }}
+                    onMouseLeave={() => {
+                      setSelectedLink({ isActive: false, index: 8575 })
+                    }}
+                    variants={blur}
+                    animate={selectedLink.isActive && selectedLink.index !== 8575 ? "open" : "closed"}
+                    className="flex overflow-hidden text-3xl lg:text-5xl pr-8 lg:pr-8 pt-2.5 font-light uppercase m-0"
+                  >
+                   analysis
+                  </motion.p>
+                </Link>
+              </div>
           </div>
 
           <div className="flex flex-wrap text-xs uppercase mt-10">
