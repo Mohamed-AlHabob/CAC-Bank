@@ -8,6 +8,7 @@ import { File, Menu, Mountain, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { YearSwitcher } from "@/components/global/year-switcher"
 import { YearWithPages } from "@/components/context/YearContext"
+import { UserButton } from "@clerk/nextjs"
 
 interface HeaderProps {
   years: YearWithPages[];
@@ -34,6 +35,7 @@ export default function Header({ years }: HeaderProps) {
           <File/>
           </Button>
         </div>
+          
 
         <div
           className="absolute right-0 flex items-center justify-center gap-2 cursor-pointer"

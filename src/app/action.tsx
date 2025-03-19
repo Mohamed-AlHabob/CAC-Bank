@@ -4,9 +4,6 @@ import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
 import { revalidatePath } from "next/cache"
 
-
-
-// Utility function to safely execute database operations
 async function safeDbOperation<T>(
   operation: () => Promise<T>,
   fallbackValue: T,
@@ -16,15 +13,12 @@ async function safeDbOperation<T>(
     return await operation()
   } catch (error) {
     console.error(`${errorMessage}:`, error)
-    // We can't use toast in server actions, but we log the error
     return fallbackValue
   }
 }
 
-// Check database connection
 export async function checkDatabaseConnection() {
   try {
-    // Simple query to check if database is accessible
     await prisma.$queryRaw`SELECT 1`
     return { connected: true, message: "Database connection successful" }
   } catch (error) {
@@ -35,19 +29,6 @@ export async function checkDatabaseConnection() {
       error: error instanceof Error ? error.message : String(error),
     }
   }
-}
-
-export async function getLatestYearWithPages() {
-  return await safeDbOperation(
-    async () => {
-      return await prisma.year.findFirst({
-        orderBy: { dateCreated: "desc" },
-        include: { pages: true },
-      })
-    },
-    null,
-    "Failed to fetch the latest year data",
-  )
 }
 
 export async function getAllYearsWithPages() {
@@ -63,11 +44,9 @@ export async function getAllYearsWithPages() {
   )
 }
 
-// Year Actions
 export async function createYear(data: Prisma.YearCreateInput) {
   const result = await safeDbOperation(async () => prisma.year.create({ data }), null, "Failed to create year")
 
-  // Revalidate paths after successful creation
   if (result) {
     revalidatePath("/years")
     revalidatePath("/")
@@ -107,7 +86,6 @@ export async function updateYear(id: string, data: Prisma.YearUpdateInput) {
     "Failed to update year",
   )
 
-  // Revalidate paths after successful update
   if (result) {
     revalidatePath("/years")
     revalidatePath(`/years/${id}`)
@@ -124,7 +102,6 @@ export async function deleteYear(id: string) {
     "Failed to delete year",
   )
 
-  // Revalidate paths after successful deletion
   if (result) {
     revalidatePath("/years")
     revalidatePath("/")
@@ -133,7 +110,6 @@ export async function deleteYear(id: string) {
   return result
 }
 
-// AnnualReport Actions
 export async function createAnnualReport(data: Prisma.AnnualReportCreateInput) {
   const result = await safeDbOperation(
     async () => prisma.annualReport.create({ data }),
@@ -286,10 +262,8 @@ export async function savePage(id: string, content: any) {
     const page = await getPageById(id)
     const yearId = page?.yearId
 
-    // Ensure content is a string
     const contentToSave = typeof content === "string" ? content : JSON.stringify(content)
 
-    // Log what we're saving for debugging
     console.log("Saving content:", contentToSave)
 
     const result = await safeDbOperation(

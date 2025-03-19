@@ -8,6 +8,7 @@ import { ModeToggle } from "@/components/global/ModeToggle"
 import { useYear } from "@/components/context/YearContext"
 import { useModal } from "@/hooks/use-modal-store"
 import Image from "next/image"
+import { SignIn, SignInButton, useAuth, UserButton } from "@clerk/nextjs"
 
 // Animation variants (unchanged)
 const height = {
@@ -76,6 +77,7 @@ export default function Nav({ setIsActive }: { isActive: boolean }) {
   const [selectedLink, setSelectedLink] = useState({ isActive: false, index: 0 })
   const { currentYear } = useYear();
   const { onOpen } = useModal();
+  const { isSignedIn } = useAuth()
 
   const getChars = (word: string) => {
     const chars: JSX.Element[] = []
@@ -188,6 +190,18 @@ export default function Nav({ setIsActive }: { isActive: boolean }) {
                 <span className="text-[#9f9689]">Images:</span> CAC, Envato
               </motion.li>
             </ul>
+            <ul className="w-1/2 lg:w-auto mt-2.5 overflow-hidden list-none p-0 mr-6">
+            <motion.li custom={[0.3, 0]} variants={translate} initial="initial" animate="enter" exit="exit">
+              {!isSignedIn ? (
+                <>
+                  <span className="text-[#9f9689]">Login:</span>
+                  <SignInButton />
+                </>
+              ) : (
+                <UserButton />
+              )}
+            </motion.li>
+            </ul>
             <ul className="w-1/2 lg:w-auto mt-2.5 overflow-hidden list-none p-0">
               <motion.li
                 custom={[0.3, 0]}
@@ -227,10 +241,11 @@ export default function Nav({ setIsActive }: { isActive: boolean }) {
               />
             )}
           </motion.div>
-
+          {isSignedIn && (
           <div className="mt-6">
-            <Button className="rounded-full px-4 py-1.5 text-xs" onClick={() => onOpen("createPage")}>Button</Button>
+            <Button className="rounded-full px-4 py-1.5 text-xs" onClick={() => onOpen("createPage")}>Add New Page</Button>
           </div>
+          )}
         </div>
       </div>
     </motion.div>

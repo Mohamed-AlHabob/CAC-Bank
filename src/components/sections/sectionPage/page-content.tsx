@@ -9,6 +9,7 @@ import { savePage } from "@/app/action"
 import { Spinner } from "@/components/global/spinner"
 import { Check, Edit, Save } from 'lucide-react'
 import { motion } from "framer-motion"
+import { useAuth } from "@clerk/nextjs"
 
 interface Page {
   id: string
@@ -44,6 +45,7 @@ export default function PageContent({ fiscalYear, slug }: PageContentProps) {
   const [isSaving, setIsSaving] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
   const [editorContent, setEditorContent] = useState<any[]>(DEFAULT_CONTENT)
+  const { isSignedIn } = useAuth()
 
   useEffect(() => {
     if (currentYear) {
@@ -173,7 +175,7 @@ export default function PageContent({ fiscalYear, slug }: PageContentProps) {
                 <span className="text-[#9f9689] text-lg">Fiscal Year:</span> {fiscalYear}
             </motion.li> */}
           </div>
-
+          {isSignedIn && (
           <div className="flex gap-2">
             {isEditing ? (
               <>
@@ -211,6 +213,7 @@ export default function PageContent({ fiscalYear, slug }: PageContentProps) {
               </Button>
             )}
           </div>
+          )}
         </div>
 
         <div className="mt-24 mb-12">
