@@ -1,7 +1,6 @@
 "use client";
 import { useTransform, useScroll, motion } from "framer-motion";
 import { useRef } from "react";
-import { Chart } from "../global/Chart";
 
 export const Collaboration = () => {
   const targetRef = useRef<HTMLDivElement | null>(null);

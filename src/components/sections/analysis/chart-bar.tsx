@@ -16,7 +16,7 @@ export function ChartBar({ data }: { data: YearWithPages[] }) {
   const barData = React.useMemo(() => {
     return data.map((year) => {
       const reports = year.annualReports.reduce(
-        (acc, report) => {
+        (acc: { [x: string]: number }, report: { field: string | number; value: string }) => {
           acc[report.field] = Number.parseInt(report.value)
           return acc
         },
@@ -39,7 +39,7 @@ export function ChartBar({ data }: { data: YearWithPages[] }) {
   const chartConfig = React.useMemo(() => {
     const config: Record<string, any> = {}
 
-    fieldNames.forEach((field, index) => {
+    fieldNames.forEach((field: string | number, index: number) => {
       config[field] = {
         label: field,
         color: `hsl(var(--chart-${(index % 5) + 1}))`,

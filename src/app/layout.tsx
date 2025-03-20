@@ -7,7 +7,7 @@ import { ClerkProvider } from "@clerk/nextjs"
 import { YearProvider } from "@/components/context/YearContext"
 import { ModalProvider } from "@/components/providers/modal-provider"
 import Header from "@/components/sections/header/header"
-import { getAllYearsWithPages, getLatestYearWithPages } from "./action"
+import { getAllYearsWithPages } from "./action"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 
 const geistSans = Geist({

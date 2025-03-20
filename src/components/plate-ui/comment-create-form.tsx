@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React, { useEffect, useMemo } from 'react';
@@ -53,7 +54,7 @@ import { MentionInputElement } from './mention-input-element';
 
 export const useCommentEditor = (
   options: Omit<CreatePlateEditorOptions, 'plugins'> = {},
-  deps: any[] = []
+  deps: unknown[] = []
 ) => {
   const commentEditor = useCreateEditor(
     {

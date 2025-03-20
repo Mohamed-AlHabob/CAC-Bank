@@ -15,7 +15,7 @@ interface FileUploadProps {
   onChange: (url: string) => void
 }
 
-export const FileUpload = ({ endpoint, value, onChange }: FileUploadProps) => {
+export const FileUpload = ({ value, onChange }: FileUploadProps) => {
   const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -57,7 +57,7 @@ export const FileUpload = ({ endpoint, value, onChange }: FileUploadProps) => {
         setIsUploading(false)
       }
     },
-    [endpoint, onChange],
+    [onChange],
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

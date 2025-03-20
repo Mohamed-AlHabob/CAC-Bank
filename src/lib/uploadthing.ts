@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 import * as React from 'react';
 
 import type { OurFileRouter } from '@/app/api/uploadthing/route';
@@ -14,7 +15,7 @@ export interface UploadedFile<T = unknown> extends ClientUploadedFileData<T> {}
 
 interface UseUploadFileProps
   extends Pick<
-    UploadFilesOptions<OurFileRouter, keyof OurFileRouter>,
+    UploadFilesOptions<OurFileRouter>,
     'headers' | 'onUploadBegin' | 'onUploadProgress' | 'skipPolling'
   > {
   onUploadComplete?: (file: UploadedFile) => void;

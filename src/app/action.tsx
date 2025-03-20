@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
-import { Value } from "@udecode/plate"
 import { revalidatePath } from "next/cache"
 
 async function safeDbOperation<T>(
@@ -272,7 +271,7 @@ export const savePage = async (pageId: string, content: any) => {
   try {
     await prisma.page.update({
       where: { id: pageId },
-      data: { content },
+      data: { content: content as Prisma.InputJsonValue },
     });
   } catch (error) {
     console.error("Failed to save page:", error);

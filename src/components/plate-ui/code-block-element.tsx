@@ -71,6 +71,7 @@ export const CodeBlockElement = withRef<typeof PlateElement>(
 );
 
 function CopyButton({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   showLabel = false,
   value,
   ...props

@@ -8,7 +8,7 @@ import { ModeToggle } from "@/components/global/ModeToggle"
 import { useYear } from "@/components/context/YearContext"
 import { useModal } from "@/hooks/use-modal-store"
 import Image from "next/image"
-import { SignIn, SignInButton, useAuth, UserButton } from "@clerk/nextjs"
+import { SignInButton, useAuth, UserButton } from "@clerk/nextjs"
 
 // Animation variants (unchanged)
 const height = {

@@ -8,7 +8,6 @@ import { File, Menu, Mountain, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { YearSwitcher } from "@/components/global/year-switcher"
 import { YearWithPages } from "@/components/context/YearContext"
-import { UserButton } from "@clerk/nextjs"
 
 interface HeaderProps {
   years: YearWithPages[];

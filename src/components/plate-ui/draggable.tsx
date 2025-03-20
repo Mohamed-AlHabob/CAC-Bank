@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 'use client';
 
 import React, { useMemo } from 'react';
@@ -88,6 +89,7 @@ export const DraggableAboveNodes: RenderNodeWrapper = (props) => {
 };
 
 export const Draggable = withRef<'div', PlateRenderElementProps>(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ className, ...props }, ref) => {
     const { children, editor, element, path } = props;
     const blockSelectionApi =

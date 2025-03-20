@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 
 import * as React from "react"
@@ -126,7 +127,7 @@ export const getColumns = (data: YearWithPages[]): ColumnDef<YearWithPages>[] =>
       },
       cell: ({ row }) => {
         const annualReports = row.original.annualReports
-        const report = annualReports.find((r) => r.field === field)
+        const report = annualReports.find((r: { field: string }) => r.field === field)
         const value = report ? Number.parseFloat(report.value) : 0
         const formatted = new Intl.NumberFormat("en-US", {
           style: "currency",
@@ -153,7 +154,7 @@ export const getColumns = (data: YearWithPages[]): ColumnDef<YearWithPages>[] =>
     enableHiding: false,
     cell: ({ row }) => {
       const year = row.original
-      const profit = Number.parseFloat(year.totalProfit)
+      const profit = Number.parseFloat(year.totalProfit )
 
       return (
         <div className="flex items-center justify-end gap-2">

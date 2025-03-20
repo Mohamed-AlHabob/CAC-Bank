@@ -87,6 +87,7 @@ export const ColumnElement = withHOC(
   })
 );
 
+// eslint-disable-next-line react/display-name
 const ColumnDragHandle = React.memo(() => {
   return (
     <TooltipProvider>
@@ -110,6 +111,7 @@ const ColumnDragHandle = React.memo(() => {
   );
 });
 
+// eslint-disable-next-line react/display-name
 const DropLine = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>

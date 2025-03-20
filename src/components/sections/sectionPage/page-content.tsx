@@ -20,7 +20,6 @@ interface PageContentProps {
 
 const PageContent = ({ page }: PageContentProps) => {
   const { currentYear } = useYear();
-  const { onOpen } = useModal();
   const { isSignedIn } = useAuth();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -98,7 +97,7 @@ const PageContent = ({ page }: PageContentProps) => {
 
         <div className="min-h-[50vh] bg-background dark:bg-foreground">
           <PlateEditor
-            content={content}
+            content={content || []}
             editable={isEditing}
             onChange={(newContent) => setContent(newContent)}
           />

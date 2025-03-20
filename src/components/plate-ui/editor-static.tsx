@@ -41,6 +41,7 @@ export const editorVariants = cva(
 );
 
 export function EditorStatic({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   children,
   className,
   variant,

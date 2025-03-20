@@ -3,7 +3,6 @@ import { BranchIcon } from "@/icons/branch";
 import { stylesWithCssVar } from "@/utils/motion";
 import { useScroll, useTransform, motion, MotionStyle } from "framer-motion";
 import { useRef } from "react";
-import Image from 'next/image';
 import { Chart } from "../global/Chart";
 import { useYear } from "../context/YearContext";
 

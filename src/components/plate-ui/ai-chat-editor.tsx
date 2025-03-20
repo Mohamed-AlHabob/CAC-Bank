@@ -96,6 +96,7 @@ const plugins = [
   MarkdownPlugin.configure({ options: { indentList: true } }),
 ];
 
+// eslint-disable-next-line react/display-name
 export const AIChatEditor = memo(({ content }: { content: string }) => {
   const aiEditor = usePlateEditor({
     plugins,

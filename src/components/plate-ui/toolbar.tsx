@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 'use client';
 
 import * as React from 'react';
@@ -15,7 +16,6 @@ export const Toolbar = withCn(
   'relative flex items-center select-none'
 );
 
-const a = cn('flex items-center');
 
 export const ToolbarToggleGroup = withCn(
   ToolbarPrimitive.ToolbarToggleGroup,

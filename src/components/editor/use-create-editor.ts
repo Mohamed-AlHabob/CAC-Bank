@@ -64,8 +64,6 @@ import {
 
 import { copilotPlugins } from '@/components/editor/plugins/copilot-plugins';
 import { editorPlugins } from '@/components/editor/plugins/editor-plugins';
-import { FixedToolbarPlugin } from '@/components/editor/plugins/fixed-toolbar-plugin';
-import { FloatingToolbarPlugin } from '@/components/editor/plugins/floating-toolbar-plugin';
 import { AILeaf } from '@/components/plate-ui/ai-leaf';
 import { BlockquoteElement } from '@/components/plate-ui/blockquote-element';
 import { CodeBlockElement } from '@/components/plate-ui/code-block-element';
@@ -167,11 +165,11 @@ export const useCreateEditor = (
     readOnly,
     ...options
   }: {
-    components?: Record<string, any>;
-    plugins?: any[];
+    components?: Record<string, unknown>;
+    plugins?: unknown[];
     readOnly?: boolean;
   } & Omit<CreatePlateEditorOptions, 'plugins'> = {},
-  deps: any[] = []
+  deps: unknown[] = []
 ) => {
   return usePlateEditor<Value>(
     {
