@@ -39,10 +39,10 @@ export function ChartBar({ data }: { data: YearWithPages[] }) {
   const chartConfig = React.useMemo(() => {
     const config: Record<string, any> = {}
 
-    fieldNames.forEach((field: string | number, index: number) => {
+    fieldNames.forEach((field: string) => {
       config[field] = {
         label: field,
-        color: `hsl(var(--chart-${(index % 5) + 1}))`,
+        color: `hsl(var(--chart-${(fieldNames.indexOf(field) % 5) + 1}))`,
       }
     })
 
@@ -62,7 +62,7 @@ export function ChartBar({ data }: { data: YearWithPages[] }) {
             <XAxis dataKey="year" tickLine={false} tickMargin={10} axisLine={false} />
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />
-            {fieldNames.map((field, index) => (
+            {fieldNames.map((field) => (
               <Bar key={field} dataKey={field} fill={`var(--color-${field})`} radius={[4, 4, 0, 0]} />
             ))}
           </BarChart>
@@ -74,4 +74,3 @@ export function ChartBar({ data }: { data: YearWithPages[] }) {
     </Card>
   )
 }
-

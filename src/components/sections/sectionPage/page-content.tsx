@@ -4,8 +4,6 @@ import { useState } from "react";
 import PlateEditor from "@/components/editor/plate-editor";
 import { useYear } from "@/components/context/YearContext";
 import { Button } from "@/components/ui/button";
-import { useModal } from "@/hooks/use-modal-store";
-
 import { Spinner } from "@/components/global/spinner";
 import { Edit, Save } from "lucide-react";
 import { motion } from "framer-motion";
