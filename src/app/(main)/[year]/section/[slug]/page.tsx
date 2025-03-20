@@ -1,14 +1,13 @@
 import { getPageByٍlug } from "@/app/action"
 import PageContent from "@/components/sections/sectionPage/page-content"
 
-interface PageProps {
-  params: {
-    slug: string
+type PageProps = {
+	params: Promise<{ slug: string}>
+	
   }
-}
 
 export default async function Page({ params }: PageProps) {
-  const {  slug } = params
+  const slug = (await params).slug
 
   const page = await getPageByٍlug(slug)
 
