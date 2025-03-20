@@ -1,7 +1,7 @@
 'use client';
 
 import type { TElement } from '@udecode/plate';
-import type { PlatePlugin } from '@udecode/plate'; // Import PlatePlugin type
+import type { SlatePlugin } from '@udecode/plate'; // Import PlatePlugin type
 
 import { faker } from '@faker-js/faker';
 import { CopilotPlugin } from '@udecode/plate-ai/react';
@@ -9,7 +9,7 @@ import { serializeMdNodes, stripMarkdown } from '@udecode/plate-markdown';
 
 import { GhostText } from '@/components/plate-ui/ghost-text';
 
-export const copilotPlugins: PlatePlugin[] = [
+export const copilotPlugins: SlatePlugin[] = [
   CopilotPlugin.configure({
     options: {
       completeOptions: {
