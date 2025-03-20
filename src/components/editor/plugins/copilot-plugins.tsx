@@ -1,7 +1,6 @@
 'use client';
 
 import type { TElement } from '@udecode/plate';
-import type { SlatePlugin } from '@udecode/plate'; // Import PlatePlugin type
 
 import { faker } from '@faker-js/faker';
 import { CopilotPlugin } from '@udecode/plate-ai/react';
@@ -9,8 +8,8 @@ import { serializeMdNodes, stripMarkdown } from '@udecode/plate-markdown';
 
 import { GhostText } from '@/components/plate-ui/ghost-text';
 
-export const copilotPlugins: SlatePlugin[] = [
-  CopilotPlugin.configure({
+export const copilotPlugins = [
+  CopilotPlugin.configure(({ api }) => ({
     options: {
       completeOptions: {
         api: '/api/ai/copilot',
@@ -29,14 +28,14 @@ export const copilotPlugins: SlatePlugin[] = [
         },
         onError: () => {
           // Mock the API response. Remove it when you implement the route /api/ai/copilot
-          CopilotPlugin.api.copilot.setBlockSuggestion({
+          api.copilot.setBlockSuggestion({
             text: stripMarkdown(faker.lorem.sentence()),
           });
         },
         onFinish: (_, completion) => {
           if (completion === '0') return;
 
-          CopilotPlugin.api.copilot.setBlockSuggestion({
+          api.copilot.setBlockSuggestion({
             text: stripMarkdown(completion),
           });
         },
@@ -56,5 +55,5 @@ export const copilotPlugins: SlatePlugin[] = [
   """`;
       },
     },
-  }),
-];
+  })),
+] as const;
