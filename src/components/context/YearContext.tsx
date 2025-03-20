@@ -9,7 +9,7 @@ interface YearContextType {
 
 export interface YearWithPages extends Year {
   pages: Page[];
-  annualReport :AnnualReport[]
+  annualReports: AnnualReport[];
 }
 
 const YearContext = createContext<YearContextType | undefined>(undefined);

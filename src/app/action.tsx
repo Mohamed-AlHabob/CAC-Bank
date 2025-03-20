@@ -37,11 +37,11 @@ export async function getAllYearsWithPages() {
       return await prisma.year.findMany({
         orderBy: { dateCreated: "desc" },
         include: { pages: true, annualReports: true },
-      })
+      });
     },
     [],
     "Failed to fetch years data",
-  )
+  );
 }
 
 export async function createYear(data: Prisma.YearCreateInput) {
