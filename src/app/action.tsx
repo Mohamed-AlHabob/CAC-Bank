@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
+import { Value } from "@udecode/plate"
 import { revalidatePath } from "next/cache"
 
 async function safeDbOperation<T>(
@@ -231,6 +232,16 @@ export async function getPageById(id: string) {
     "Failed to fetch page details",
   )
 }
+export async function getPageByٍlug(slug: string) {
+  return await safeDbOperation(
+    async () =>
+      prisma.page.findUnique({
+        where: { slug },
+      }),
+    null,
+    "Failed to fetch page details",
+  )
+}
 
 export async function getPagesByYear(yearId: string) {
   return await safeDbOperation(
@@ -257,37 +268,17 @@ export async function getParentPages() {
 }
 
 
-export async function savePage(id: string, content: any) {
+export const savePage = async (pageId: string, content: any) => {
   try {
-    const page = await getPageById(id)
-    const yearId = page?.yearId
-
-    const contentToSave = typeof content === "string" ? content : JSON.stringify(content)
-
-    console.log("Saving content:", contentToSave)
-
-    const result = await safeDbOperation(
-      async () =>
-        prisma.page.update({
-          where: { id },
-          data: { content: contentToSave },
-        }),
-      null,
-      "Failed to save page content",
-    )
-
-    if (result) {
-      revalidatePath(`/pages/${id}`)
-      if (yearId) revalidatePath(`/years/${yearId}`)
-      revalidatePath(`/pages`)
-    }
-
-    return { success: !!result, data: result }
+    await prisma.page.update({
+      where: { id: pageId },
+      data: { content },
+    });
   } catch (error) {
-    console.error("Error in savePage:", error)
-    return { success: false, error: String(error) }
+    console.error("Failed to save page:", error);
+    throw error;
   }
-}
+};
 
 export async function updatePage(id: string, data: Prisma.PageUpdateInput) {
   const page = await getPageById(id)

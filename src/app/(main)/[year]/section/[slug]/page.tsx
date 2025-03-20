@@ -1,27 +1,20 @@
-import { notFound } from "next/navigation"
+import { getPageByٍlug } from "@/app/action"
 import PageContent from "@/components/sections/sectionPage/page-content"
-import { getYearByFiscalYear } from "@/app/action"
 
 interface PageProps {
   params: {
-    year: string
     slug: string
   }
 }
 
 export default async function Page({ params }: PageProps) {
-  const { year, slug } = params
+  const {  slug } = params
 
-  // Fetch the year data
-  const fiscalYear = await getYearByFiscalYear(year)
-
-  if (!fiscalYear) {
-    notFound()
-  }
+  const page = await getPageByٍlug(slug)
 
   return (
     <div className="min-h-screen w-full" data-registry="plate">
-        <PageContent fiscalYear={year} slug={slug} />
+        <PageContent page={page} />
     </div>
   )
 }

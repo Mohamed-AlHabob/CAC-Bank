@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useCallback } from "react"
+import { useRouter } from "next/navigation" 
 
 import {
   Dialog,
@@ -14,7 +14,7 @@ import {
 import { useModal } from "@/hooks/use-modal-store"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/global/spinner"
-import { CheckCircle } from "lucide-react"
+import { CheckCircle } from 'lucide-react'
 import { publishPage } from "@/app/action"
 
 export const ConfirmSaveAndPublishPageModal = () => {
@@ -27,30 +27,35 @@ export const ConfirmSaveAndPublishPageModal = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
 
-  const onPublish = async () => {
+  const onPublish = useCallback(async () => {
     if (!page?.id) return
 
     try {
       setIsLoading(true)
-
       await publishPage(page.id)
-
       setIsSuccess(true)
 
+      // Use a shorter timeout for better UX
       setTimeout(() => {
         router.refresh()
         onClose()
         setIsSuccess(false)
-      }, 1500)
+      }, 1000)
     } catch (error) {
       console.error(error)
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [page?.id, router, onClose])
+
+  const handleClose = useCallback(() => {
+    if (!isLoading) {
+      onClose()
+    }
+  }, [isLoading, onClose])
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={onClose}>
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-card p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">Publish Page</DialogTitle>
@@ -72,7 +77,7 @@ export const ConfirmSaveAndPublishPageModal = () => {
         {!isSuccess && (
           <DialogFooter className="bg-gray-100 px-6 py-4">
             <div className="flex items-center justify-between w-full">
-              <Button disabled={isLoading} onClick={onClose} variant="ghost">
+              <Button disabled={isLoading} onClick={handleClose} variant="ghost">
                 Cancel
               </Button>
               <Button disabled={isLoading} variant="primary" onClick={onPublish}>
@@ -85,5 +90,3 @@ export const ConfirmSaveAndPublishPageModal = () => {
     </Dialog>
   )
 }
-
-
