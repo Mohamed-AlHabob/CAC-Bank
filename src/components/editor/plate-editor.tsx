@@ -12,14 +12,14 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 
 interface PlateEditorProps {
-  content?: Value[];
+  content?: Value; // Change to `Value` instead of `Value[]`
   editable?: boolean;
   onChange?: (content: Value) => void;
 }
 
 function PlateEditor({ content = [], editable = true, onChange }: PlateEditorProps) {
   const editor = useCreateEditor({
-    value: content || [],
+    value: content,
   });
 
   return (
