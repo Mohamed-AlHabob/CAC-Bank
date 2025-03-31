@@ -40,7 +40,7 @@ function PlateEditor({ content = [], editable = true, onChange }: PlateEditorPro
         )}
         <EditorContainer>
           <Editor
-            variant="default"
+            variant={"demo"}
             placeholder="Type..."
             readOnly={!editable}
             className={!editable ? "cursor-default" : ""}

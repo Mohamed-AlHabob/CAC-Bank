@@ -1,11 +1,6 @@
 @import "tailwindcss";
-
 @plugin "tailwindcss-animate";
-
-/* ---break---   */
-
 @plugin "tailwind-scrollbar-hide";
-
 @custom-variant dark (&:is(.dark *));
 
 @theme {
@@ -149,6 +144,7 @@
     height: 0;
     background: transparent;
   }
+
 
   .translate-y-centered-offset {
     @apply translate-y-[calc(-50%_+_var(--y))];

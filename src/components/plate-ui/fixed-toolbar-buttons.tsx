@@ -77,13 +77,13 @@ export function FixedToolbarButtons() {
 
           <ToolbarGroup>
             <AIToolbarButton tooltip="AI commands">
-              <WandSparklesIcon />
+              <WandSparklesIcon className=' dark:stroke-background' />
             </AIToolbarButton>
           </ToolbarGroup>
 
           <ToolbarGroup>
             <ExportToolbarButton>
-              <ArrowUpToLineIcon />
+              <ArrowUpToLineIcon className=' dark:stroke-background'/>
             </ExportToolbarButton>
 
             <ImportToolbarButton />
@@ -97,46 +97,46 @@ export function FixedToolbarButtons() {
 
           <ToolbarGroup>
             <MarkToolbarButton nodeType={BoldPlugin.key} tooltip="Bold (⌘+B)">
-              <BoldIcon />
+              <BoldIcon className=' dark:stroke-background' />
             </MarkToolbarButton>
 
             <MarkToolbarButton
               nodeType={ItalicPlugin.key}
               tooltip="Italic (⌘+I)"
             >
-              <ItalicIcon />
+              <ItalicIcon className='dark:stroke-background'/>
             </MarkToolbarButton>
 
             <MarkToolbarButton
               nodeType={UnderlinePlugin.key}
               tooltip="Underline (⌘+U)"
             >
-              <UnderlineIcon />
+              <UnderlineIcon className='dark:stroke-background' />
             </MarkToolbarButton>
 
             <MarkToolbarButton
               nodeType={StrikethroughPlugin.key}
               tooltip="Strikethrough (⌘+⇧+M)"
             >
-              <StrikethroughIcon />
+              <StrikethroughIcon className=' dark:stroke-background'/>
             </MarkToolbarButton>
 
             <MarkToolbarButton nodeType={CodePlugin.key} tooltip="Code (⌘+E)">
-              <Code2Icon />
+              <Code2Icon className=' dark:stroke-background'/>
             </MarkToolbarButton>
 
             <ColorDropdownMenu
               nodeType={FontColorPlugin.key}
               tooltip="Text color"
             >
-              <BaselineIcon />
+              <BaselineIcon className=' dark:stroke-background'/>
             </ColorDropdownMenu>
 
             <ColorDropdownMenu
               nodeType={FontBackgroundColorPlugin.key}
               tooltip="Background color"
             >
-              <PaintBucketIcon />
+              <PaintBucketIcon className='dark:stroke-background'/>
             </ColorDropdownMenu>
           </ToolbarGroup>
 
@@ -166,9 +166,6 @@ export function FixedToolbarButtons() {
             <LineHeightDropdownMenu />
             <OutdentToolbarButton />
             <IndentToolbarButton />
-          </ToolbarGroup>
-
-          <ToolbarGroup>
             <MoreDropdownMenu />
           </ToolbarGroup>
         </>
@@ -178,7 +175,7 @@ export function FixedToolbarButtons() {
 
       <ToolbarGroup>
         <MarkToolbarButton nodeType={HighlightPlugin.key} tooltip="Highlight">
-          <HighlighterIcon />
+          <HighlighterIcon className=' dark:stroke-background'/>
         </MarkToolbarButton>
         <CommentToolbarButton />
       </ToolbarGroup>

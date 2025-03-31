@@ -61,7 +61,7 @@ export function AlignDropdownMenu({ children, ...props }: DropdownMenuProps) {
     <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
         <ToolbarButton pressed={openState.open} tooltip="Align" isDropdown>
-          <IconValue />
+          <IconValue className=' dark:stroke-background'/>
         </ToolbarButton>
       </DropdownMenuTrigger>
 

@@ -46,7 +46,7 @@ import { ToolbarButton } from './toolbar';
 
 const turnIntoItems = [
   {
-    icon: <PilcrowIcon />,
+    icon: <PilcrowIcon  />,
     keywords: ['paragraph'],
     label: 'Text',
     value: ParagraphPlugin.key,
@@ -133,7 +133,7 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
     <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
         <ToolbarButton
-          className="min-w-[125px]"
+          className="min-w-[125px] dark:text-background "
           pressed={openState.open}
           tooltip="Turn into"
           isDropdown

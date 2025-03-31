@@ -47,7 +47,7 @@ export function TableDropdownMenu(props: DropdownMenuProps) {
     <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
         <ToolbarButton pressed={openState.open} tooltip="Table" isDropdown>
-          <Table />
+          <Table className=' dark:stroke-background' />
         </ToolbarButton>
       </DropdownMenuTrigger>
 

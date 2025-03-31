@@ -14,7 +14,7 @@ export const IndentToolbarButton = withRef<typeof ToolbarButton>(
 
     return (
       <ToolbarButton ref={ref} tooltip="Indent" {...props} {...rest}>
-        <Indent />
+        <Indent className=' dark:stroke-background'/>
       </ToolbarButton>
     );
   }

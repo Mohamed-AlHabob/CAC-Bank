@@ -23,6 +23,7 @@ export default function Hero() {
         scrub: 0.25,
         start: 0,
         end: window.innerHeight,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         onUpdate: (e) => (direction = e.direction * -1),
       },
       x: "-500px",

@@ -52,7 +52,7 @@ export function NumberedIndentListToolbarButton() {
         data-state={pressed ? 'on' : 'off'}
         tooltip="Numbered List"
       >
-        <ListOrdered className="size-4" />
+        <ListOrdered className="size-4 dark:stroke-background" />
       </ToolbarSplitButtonPrimary>
 
       <DropdownMenu {...openState} modal={false}>
@@ -140,7 +140,7 @@ export function BulletedIndentListToolbarButton() {
         data-state={pressed ? 'on' : 'off'}
         tooltip="Bulleted List"
       >
-        <List className="size-4" />
+        <List className="size-4  dark:stroke-background" />
       </ToolbarSplitButtonPrimary>
 
       <DropdownMenu {...openState} modal={false}>

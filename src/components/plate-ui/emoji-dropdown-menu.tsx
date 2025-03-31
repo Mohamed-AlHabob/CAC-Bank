@@ -27,7 +27,7 @@ export function EmojiDropdownMenu({
     <EmojiToolbarDropdown
       control={
         <ToolbarButton pressed={isOpen} tooltip="Emoji" isDropdown {...props}>
-          <Smile />
+          <Smile className=' dark:stroke-background'/>
         </ToolbarButton>
       }
       isOpen={isOpen}

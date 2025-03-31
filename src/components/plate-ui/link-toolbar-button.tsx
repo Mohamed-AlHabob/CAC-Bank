@@ -23,7 +23,7 @@ export const LinkToolbarButton = withRef<typeof ToolbarButton>((rest, ref) => {
       {...props}
       {...rest}
     >
-      <Link />
+      <Link className=' dark:stroke-background'/>
     </ToolbarButton>
   );
 });

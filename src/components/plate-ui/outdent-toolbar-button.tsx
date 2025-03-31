@@ -14,7 +14,7 @@ export const OutdentToolbarButton = withRef<typeof ToolbarButton>(
 
     return (
       <ToolbarButton ref={ref} tooltip="Outdent" {...props} {...rest}>
-        <Outdent />
+        <Outdent className=' dark:stroke-background'/>
       </ToolbarButton>
     );
   }

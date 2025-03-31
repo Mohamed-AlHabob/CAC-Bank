@@ -33,7 +33,7 @@ export function LineHeightDropdownMenu({ ...props }: DropdownMenuProps) {
           tooltip="Line height"
           isDropdown
         >
-          <WrapText />
+          <WrapText className=' dark:stroke-background'/>
         </ToolbarButton>
       </DropdownMenuTrigger>
 

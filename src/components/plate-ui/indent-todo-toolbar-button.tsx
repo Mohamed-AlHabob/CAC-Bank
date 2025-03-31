@@ -16,7 +16,7 @@ export const IndentTodoToolbarButton = withRef<typeof ToolbarButton>(
 
     return (
       <ToolbarButton ref={ref} tooltip="Todo" {...props} {...rest}>
-        <ListTodoIcon />
+        <ListTodoIcon className=' dark:stroke-background'/>
       </ToolbarButton>
     );
   }

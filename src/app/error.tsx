@@ -1,7 +1,6 @@
 'use client';
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import Rounded from "@/components/global/button/RoundedButton"
 export default function Error({
   error,

@@ -21,7 +21,7 @@ export const RedoToolbarButton = withRef<typeof ToolbarButton>((props, ref) => {
       tooltip="Redo"
       {...props}
     >
-      <Redo2Icon />
+      <Redo2Icon className=' dark:stroke-background' />
     </ToolbarButton>
   );
 });
@@ -42,7 +42,7 @@ export const UndoToolbarButton = withRef<typeof ToolbarButton>((props, ref) => {
       tooltip="Undo"
       {...props}
     >
-      <Undo2Icon />
+      <Undo2Icon className=' dark:stroke-background' />
     </ToolbarButton>
   );
 });

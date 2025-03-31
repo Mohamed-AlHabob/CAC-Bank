@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from 'react'
+import React, { ReactNode, useEffect, useRef } from 'react'
 import gsap from 'gsap';
 
 export default function Magnetic({ children }: { children: ReactNode }) {
@@ -32,6 +32,7 @@ export default function Magnetic({ children }: { children: ReactNode }) {
 
         return () => {
             magnetic.current?.removeEventListener("mousemove", handleMouseMove);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
             magnetic.current?.removeEventListener("mouseleave", handleMouseLeave);
         };
     }, [children]);

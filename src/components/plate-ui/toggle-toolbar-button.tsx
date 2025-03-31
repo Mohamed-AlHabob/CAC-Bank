@@ -18,7 +18,7 @@ export const ToggleToolbarButton = withRef<typeof ToolbarButton>(
 
     return (
       <ToolbarButton ref={ref} tooltip="Toggle" {...props} {...rest}>
-        <ListCollapseIcon />
+        <ListCollapseIcon className=' dark:stroke-background'/>
       </ToolbarButton>
     );
   }

@@ -124,7 +124,7 @@ const ToolbarButton = withTooltip(
                 </div>
                 <div>
                   <ChevronDown
-                    className="size-3.5 text-muted-foreground"
+                    className="size-3.5 text-muted-foreground "
                     data-icon
                   />
                 </div>
