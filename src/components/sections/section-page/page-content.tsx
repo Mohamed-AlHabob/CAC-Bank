@@ -21,7 +21,13 @@ const PageContent = ({ page }: PageContentProps) => {
   const { isSignedIn } = useAuth();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [content, setContent] = useState<Value | null>(page.content);
+  const [content, setContent] = useState<Value | null>(() => {
+    try {
+      return JSON.parse(page.content as string) as Value;
+    } catch {
+      return null;
+    }
+  });
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {

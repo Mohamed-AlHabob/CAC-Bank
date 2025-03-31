@@ -9,6 +9,7 @@ import { useYear } from "@/components/context/YearContext"
 import { useModal } from "@/hooks/use-modal-store"
 import Image from "next/image"
 import { SignInButton, useAuth, UserButton } from "@clerk/nextjs"
+import { JsonValue } from "@prisma/client/runtime/library"
 
 // Animation variants (unchanged)
 const height = {
@@ -73,7 +74,7 @@ const opacity = {
   },
 }
 
-export default function Nav({ setIsActive }: { isActive: boolean }) {
+export default function Nav({ setIsActive }: { isActive: boolean; setIsActive: (value: boolean) => void }) {
   const [selectedLink, setSelectedLink] = useState({ isActive: false, index: 0 })
   const { currentYear } = useYear();
   const { onOpen } = useModal();
@@ -109,7 +110,7 @@ export default function Nav({ setIsActive }: { isActive: boolean }) {
       <div className="flex flex-col lg:flex-row lg:justify-between gap-12 mb-20 lg:mb-0 p-6">
         <div className="flex flex-col justify-between">
           <div className="mt-10 lg:mt-20">
-            {currentYear?.pages.map((item, index) => (
+            {currentYear?.pages.map((item: { id: string; title: string; content: JsonValue; yearId: string; slug: string; isArchived: boolean; initialPromotionalImage: string | null; isPublished: boolean; createdAt: Date; parentPageId: string | null; childrenPages?: { slug: string; title: string }[] }, index) => (
               <div key={`section_${index}`} className="mb-6">
                 <Link href={`/section/${item.slug}`} onClick={() => { setIsActive(false) }}>
                   <motion.p

@@ -175,7 +175,6 @@ export default function PageSictionShowcase() {
          variants={scaleAnimation}
          initial="initial"
          animate={active ? "enter" : "closed"}
-         onClick={() => handleViewClick(pagesWithColors[index].slug)}
        >
          View
        </motion.div>

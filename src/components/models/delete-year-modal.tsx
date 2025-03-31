@@ -22,7 +22,7 @@ export const DeleteYearModal = () => {
   const router = useRouter()
 
   const isModalOpen = isOpen && type === "deleteYear"
-  const { year } = data
+  const { year } = data as { year: { id: string; fiscalYear: string; totalProfit: number | null; ceosMessage: string | null; dateCreated: Date; publication: Date | null; pages?: { id: string }[] } }
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -55,9 +55,9 @@ export const DeleteYearModal = () => {
             Are you sure you want to delete this fiscal year?
             <br />
             <span className="text-red-500 font-semibold">{year?.fiscalYear}</span> will be permanently deleted.
-            {year?.pages && year.pages.length > 0 && (
+            {(year?.pages ?? []).length > 0 && (
               <div className="mt-4 p-3 bg-amber-50 text-amber-800 rounded-md">
-                Warning: This fiscal year contains {year.pages.length} page(s). All associated pages and annual reports
+                Warning: This fiscal year contains {year.pages?.length ?? 0} page(s). All associated pages and annual reports
                 will be deleted.
               </div>
             )}

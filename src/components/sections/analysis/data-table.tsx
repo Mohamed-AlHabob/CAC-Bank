@@ -154,7 +154,7 @@ export const getColumns = (data: YearWithPages[]): ColumnDef<YearWithPages>[] =>
     enableHiding: false,
     cell: ({ row }) => {
       const year = row.original
-      const profit = Number.parseFloat(year.totalProfit )
+      const profit = Number.parseFloat(year.totalProfit?.toString() || "0")
 
       return (
         <div className="flex items-center justify-end gap-2">

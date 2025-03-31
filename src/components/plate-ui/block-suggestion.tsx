@@ -379,8 +379,8 @@ export const useResolveSuggestion = (
 
       let newText = '';
       let text = '';
-      let properties: unknown = {};
-      let newProperties: unknown = {};
+      let properties: Record<string, unknown> = {};
+      let newProperties: Record<string, unknown> = {};
 
       // overlapping suggestion
       entries.forEach(([node]) => {
@@ -403,7 +403,7 @@ export const useResolveSuggestion = (
               }
               case 'update': {
                 properties = {
-                  ...properties,
+                  ...(typeof properties === 'object' && properties !== null ? properties : {}),
                   ...data.properties,
                 };
 

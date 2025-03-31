@@ -18,4 +18,4 @@ type MotionStyleWithCssVar = {
 };
 
 export const stylesWithCssVar = (styles: MotionStyleWithCssVar) =>
-  styles as unknown;
+  styles as MotionStyle;

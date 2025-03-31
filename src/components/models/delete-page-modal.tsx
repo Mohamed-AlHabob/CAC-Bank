@@ -16,13 +16,14 @@ import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/global/spinner"
 import { AlertTriangle } from "lucide-react"
 import { deletePage } from "@/app/action"
+import { JsonValue } from "@prisma/client/runtime/library"
 
 export const DeletePageModal = () => {
   const { isOpen, onClose, type, data } = useModal()
   const router = useRouter()
 
   const isModalOpen = isOpen && type === "deletePage"
-  const { page } = data
+  const { page } = data as { page?: { id: string; yearId: string; title: string; slug: string; isArchived: boolean; content: JsonValue; initialPromotionalImage: string | null; isPublished: boolean; createdAt: Date; parentPageId: string | null; childPages?: { id: string; title: string }[] } }
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -54,10 +55,10 @@ export const DeletePageModal = () => {
           <DialogDescription className="text-center text-zinc-500">
             Are you sure you want to delete this page?
             <br />
-            <span className="text-red-500 font-semibold">{page?.title}</span> will be permanently deleted.
-            {page?.childrenPages && page.childrenPages.length > 0 && (
+            <span className="text-red-500 font-semibold">{page?.title || "Unknown Page"}</span> will be permanently deleted.
+            {page?.childPages && page.childPages.length > 0 && (
               <div className="mt-4 p-3 bg-amber-50 text-amber-800 rounded-md">
-                Warning: This page has {page.childrenPages.length} child page(s). Deleting it will make them
+                Warning: This page has {page.childPages.length} child page(s). Deleting it will make them
                 inaccessible.
               </div>
             )}

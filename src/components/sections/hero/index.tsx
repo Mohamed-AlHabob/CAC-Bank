@@ -47,9 +47,8 @@ export default function Hero() {
     <motion.main
       initial="initial"
       animate="enter"
-      className="flex h-screen w-full overflow-hidden"
+      className="relative flex h-screen w-full overflow-hidden"
     >
-    <div className=" h-full w-full">
   <Image 
     src="https://ucarecdn.com/99895517-b829-484b-a29b-b19b80467acb/-/preview/1000x732/" 
     fill 
@@ -57,7 +56,7 @@ export default function Hero() {
     className="object-cover"
   />
       <div className="absolute bottom-0 left-0 ">
-        <div ref={slider} className="relative whitespace-nowrap">
+        <div ref={slider} className="relative whitespace-nowrap text-white">
           <p
             ref={firstText}
             className="relative m-0 pr-12 text-6xl sm:text-8xl md:text-9xl lg:text-[230px] font-medium"
@@ -91,10 +90,9 @@ export default function Hero() {
             fill="white"
           />
         </svg>
-        <p className="m-0 mb-2">CAC Bank</p>
-        <p className="m-0">Annual Report & financial analysis</p>
+        <p className="m-0 mb-2 text-white">CAC Bank</p>
+        <p className="m-0 text-white">Annual Report & financial analysis</p>
       </div>
-    </div>
     </motion.main>
   )
 }

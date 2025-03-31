@@ -151,7 +151,7 @@ export function ChartAreaInteractive({ data }: { data: YearWithPages[] }) {
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) => `Fiscal Year: ${value}`}
-                  valueFormatter={(value) => `Profit: $${value}`}
+                  formatter={(value: any) => `Profit: $${value}`}
                   indicator="dot"
                 />
               }

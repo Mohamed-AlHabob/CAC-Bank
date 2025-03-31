@@ -181,9 +181,9 @@ export const useCreateEditor = (
         ...override,
       },
       plugins: [
-        ...copilotPlugins,
-        ...editorPlugins,
-      ],
+        ...(Array.isArray(copilotPlugins) ? copilotPlugins : []),
+        ...(Array.isArray(editorPlugins) ? editorPlugins : []),
+      ],      
       value: [
         {
           children: [{ text: 'Playground' }],
