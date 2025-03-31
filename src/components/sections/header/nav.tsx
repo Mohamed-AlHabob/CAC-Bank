@@ -111,7 +111,7 @@ export default function Nav({ setIsActive }: { isActive: boolean }) {
           <div className="mt-10 lg:mt-20">
             {currentYear?.pages.map((item, index) => (
               <div key={`section_${index}`} className="mb-6">
-                <Link href={`/${currentYear.fiscalYear}/section/${item.slug}`} onClick={() => { setIsActive(false) }}>
+                <Link href={`/section/${item.slug}`} onClick={() => { setIsActive(false) }}>
                   <motion.p
                     onMouseOver={() => {
                       setSelectedLink({ isActive: true, index })
@@ -139,7 +139,7 @@ export default function Nav({ setIsActive }: { isActive: boolean }) {
               </div>
             ))}
               <div className="mb-6">
-                <Link href={`/${currentYear?.fiscalYear}/structure`} onClick={() => { setIsActive(false) }}>
+                <Link href={`/structure`} onClick={() => { setIsActive(false) }}>
                   <motion.p
                     onMouseOver={() => {
                       setSelectedLink({ isActive: true, index: 565 })
@@ -156,7 +156,7 @@ export default function Nav({ setIsActive }: { isActive: boolean }) {
                 </Link>
               </div>
               <div className="mb-6">
-              <Link href={`/${currentYear?.fiscalYear}/analysis`} onClick={() => { setIsActive(false) }}>
+              <Link href={`/analysis`} onClick={() => { setIsActive(false) }}>
                   <motion.p
                     onMouseOver={() => {
                       setSelectedLink({ isActive: true, index: 8575 })

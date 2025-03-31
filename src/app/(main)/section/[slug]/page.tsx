@@ -1,6 +1,9 @@
-import { getPageByٍlug } from "@/app/action"
-import PageContent from "@/components/sections/sectionPage/page-content"
+
+import { getPageBySlug } from "@/app/action";
+import PageContent from "@/components/sections/section-page/page-content"
 import type { Page } from "@prisma/client";
+
+
 type PageProps = {
 	params: Promise<{ slug: string}>
 	
@@ -9,7 +12,7 @@ type PageProps = {
 export default async function Page({ params }: PageProps) {
   const slug = (await params).slug
 
-  const page = await getPageByٍlug(slug)
+  const page = await getPageBySlug(slug)
 
   return (
     <div className="min-h-screen w-full" data-registry="plate">

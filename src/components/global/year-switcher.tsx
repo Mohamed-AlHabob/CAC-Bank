@@ -29,13 +29,13 @@ export function YearSwitcher({ years }: YearSwitcherProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="w-fit px-3 min-w-28 flex items-center justify-between gap-2">
+        <Button className="w-fit px-3 min-w-28 flex items-center justify-between gap-2 ">
           <span className="truncate font-semibold">{currentYear?.fiscalYear || "Select Year"}</span>
           <ChevronDown className="size-4 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-64 rounded-lg" align="start" side="bottom" sideOffset={4}>
+      <DropdownMenuContent className="w-64 rounded-lg " align="start" side="bottom" sideOffset={4}>
         <DropdownMenuLabel className="text-xs text-muted-foreground">Available Years</DropdownMenuLabel>
 
         {years.length > 0 ? (

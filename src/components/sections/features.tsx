@@ -60,11 +60,11 @@ export const Features = () => {
   return (
     <section
       ref={targetRef}
-      className="flex h-[500vh] flex-col items-center justify-start bg-foreground relative"
+      className="flex h-[500vh] flex-col items-center justify-start relative"
     >
       <div className="sticky top-0 z-20 w-full  backdrop-blur-md py-6">
         <div className="max-w-5xl mx-auto px-6 text-center">
-          <p className="mt-20 text-2xl text-white dark:text-black">
+          <p className="mt-20 text-2xl">
             &quot;{currentYear?.ceosMessage}.&quot;
           </p>
           <p className="mt-2 text-gray-500 italic">— Dr. Ibrahim Al-Houthi {currentYear?.fiscalYear}</p>

@@ -1,8 +1,10 @@
 "use server"
 
 import prisma from "@/lib/prisma"
+import { auth } from "@clerk/nextjs/server"
 import { Prisma } from "@prisma/client"
 import { revalidatePath } from "next/cache"
+
 
 async function safeDbOperation<T>(
   operation: () => Promise<T>,
@@ -14,6 +16,13 @@ async function safeDbOperation<T>(
   } catch (error) {
     console.error(`${errorMessage}:`, error)
     return fallbackValue
+  }
+}
+
+function checkAuth() {
+  const { userId } = auth()
+  if (!userId) {
+    throw new Error("Unauthorized access")
   }
 }
 
@@ -37,14 +46,15 @@ export async function getAllYearsWithPages() {
       return await prisma.year.findMany({
         orderBy: { dateCreated: "desc" },
         include: { pages: true, annualReports: true },
-      });
+      })
     },
     [],
     "Failed to fetch years data",
-  );
+  )
 }
 
 export async function createYear(data: Prisma.YearCreateInput) {
+  checkAuth()
   const result = await safeDbOperation(async () => prisma.year.create({ data }), null, "Failed to create year")
 
   if (result) {
@@ -80,6 +90,7 @@ export async function getAllYears() {
 }
 
 export async function updateYear(id: string, data: Prisma.YearUpdateInput) {
+  checkAuth()
   const result = await safeDbOperation(
     async () => prisma.year.update({ where: { id }, data }),
     null,
@@ -96,6 +107,7 @@ export async function updateYear(id: string, data: Prisma.YearUpdateInput) {
 }
 
 export async function deleteYear(id: string) {
+  checkAuth()
   const result = await safeDbOperation(
     async () => prisma.year.delete({ where: { id } }),
     null,
@@ -111,6 +123,7 @@ export async function deleteYear(id: string) {
 }
 
 export async function createAnnualReport(data: Prisma.AnnualReportCreateInput) {
+  checkAuth()
   const result = await safeDbOperation(
     async () => prisma.annualReport.create({ data }),
     null,
@@ -149,6 +162,7 @@ export async function getAnnualReportsByField(field: string) {
 }
 
 export async function updateAnnualReport(id: string, data: Prisma.AnnualReportUpdateInput) {
+  checkAuth()
   const result = await safeDbOperation(
     async () => prisma.annualReport.update({ where: { id }, data }),
     null,
@@ -163,6 +177,7 @@ export async function updateAnnualReport(id: string, data: Prisma.AnnualReportUp
 }
 
 export async function deleteAnnualReport(id: string) {
+  checkAuth()
   const report = await getAnnualReportById(id)
   const yearId = report?.yearId
 
@@ -179,45 +194,37 @@ export async function deleteAnnualReport(id: string) {
   return result
 }
 
-
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
     .replace(/[^\w\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/--+/g, "-")
-    .trim();
+    .trim()
 }
 
-// Page Actions
 export async function createPage(data: Prisma.PageCreateInput) {
+  checkAuth()
   const result = await safeDbOperation(async () => {
-    // Generate a slug from the title
-    let slug = generateSlug(data.title);
-
-    // Check if the slug already exists
-    let existingPage = await prisma.page.findUnique({ where: { slug } });
-    let suffix = 1;
-
-    // If the slug exists, append a suffix to make it unique
+    let slug = generateSlug(data.title)
+    let existingPage = await prisma.page.findUnique({ where: { slug } })
+    let suffix = 1
     while (existingPage) {
-      slug = `${generateSlug(data.title)}-${suffix}`;
-      existingPage = await prisma.page.findUnique({ where: { slug } });
-      suffix++;
+      slug = `${generateSlug(data.title)}-${suffix}`
+      existingPage = await prisma.page.findUnique({ where: { slug } })
+      suffix++
     }
 
-    // Add the slug to the data
-    const pageData = { ...data, slug };
+    const pageData = { ...data, slug }
 
-    // Create the page with the unique slug
-    return await prisma.page.create({ data: pageData });
-  }, null, "Failed to create page");
+    return await prisma.page.create({ data: pageData })
+  }, null, "Failed to create page")
 
   if (result) {
-    revalidatePath(`/`);
+    revalidatePath(`/`)
   }
 
-  return result;
+  return result
 }
 
 export async function getPageById(id: string) {
@@ -231,7 +238,8 @@ export async function getPageById(id: string) {
     "Failed to fetch page details",
   )
 }
-export async function getPageByٍlug(slug: string) {
+
+export async function getPageBySlug(slug: string) {
   return await safeDbOperation(
     async () =>
       prisma.page.findUnique({
@@ -266,20 +274,21 @@ export async function getParentPages() {
   )
 }
 
-
 export const savePage = async (pageId: string, content: any) => {
+  checkAuth()
   try {
     await prisma.page.update({
       where: { id: pageId },
       data: { content: content as Prisma.InputJsonValue },
-    });
+    })
   } catch (error) {
-    console.error("Failed to save page:", error);
-    throw error;
+    console.error("Failed to save page:", error)
+    throw error
   }
-};
+}
 
 export async function updatePage(id: string, data: Prisma.PageUpdateInput) {
+  checkAuth()
   const page = await getPageById(id)
   const yearId = page?.yearId
 
@@ -299,6 +308,7 @@ export async function updatePage(id: string, data: Prisma.PageUpdateInput) {
 }
 
 export async function deletePage(id: string) {
+  checkAuth()
   const page = await getPageById(id)
   const yearId = page?.yearId
 
@@ -317,6 +327,7 @@ export async function deletePage(id: string) {
 }
 
 export async function archivePage(id: string) {
+  checkAuth()
   const page = await getPageById(id)
   const yearId = page?.yearId
 
@@ -340,6 +351,7 @@ export async function archivePage(id: string) {
 }
 
 export async function publishPage(id: string) {
+  checkAuth()
   const page = await getPageById(id)
   const yearId = page?.yearId
 
@@ -362,7 +374,6 @@ export async function publishPage(id: string) {
   return result
 }
 
-// Utility Functions
 export async function getFullYearStructure(yearId: string) {
   return await safeDbOperation(
     async () =>

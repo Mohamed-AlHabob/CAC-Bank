@@ -62,7 +62,7 @@ import {
   usePlateEditor,
 } from '@udecode/plate/react';
 
-// import { copilotPlugins } from '@/components/editor/plugins/copilot-plugins';
+import { copilotPlugins } from '@/components/editor/plugins/copilot-plugins';
 import { editorPlugins } from '@/components/editor/plugins/editor-plugins';
 import { AILeaf } from '@/components/plate-ui/ai-leaf';
 import { BlockquoteElement } from '@/components/plate-ui/blockquote-element';
@@ -181,7 +181,7 @@ export const useCreateEditor = (
         ...override,
       },
       plugins: [
-        // ...copilotPlugins,
+        ...copilotPlugins,
         ...editorPlugins,
       ],
       value: [
