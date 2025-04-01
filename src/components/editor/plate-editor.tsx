@@ -12,7 +12,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 
 interface PlateEditorProps {
-  content?: Value; // Change to `Value` instead of `Value[]`
+  content?: Value;
   editable?: boolean;
   onChange?: (content: Value) => void;
 }

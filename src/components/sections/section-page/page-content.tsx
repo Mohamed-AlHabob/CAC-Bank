@@ -23,7 +23,7 @@ const PageContent = ({ page }: PageContentProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState<Value | null>(() => {
     try {
-      return JSON.parse(page.content as string) as Value;
+      return page.content as Value;
     } catch {
       return null;
     }

@@ -31,7 +31,7 @@ export default function RoundedButton({
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, []);
+  }, [timeoutId]);
 
   const manageMouseEnter = () => {
     if (timeoutId) clearTimeout(timeoutId);
