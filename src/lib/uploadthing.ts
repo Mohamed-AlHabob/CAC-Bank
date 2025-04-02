@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import * as React from 'react';
 
-import type { OurFileRouter } from '@/app/api/uploadthing/route';
 import type {
   ClientUploadedFileData,
   UploadFilesOptions,
@@ -10,6 +9,7 @@ import type {
 import { generateReactHelpers } from '@uploadthing/react';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { OurFileRouter } from './our-file-router';
 
 export interface UploadedFile<T = unknown> extends ClientUploadedFileData<T> {}
 
@@ -37,7 +37,7 @@ export function useUploadFile({
     setUploadingFile(file);
 
     try {
-      const res = await uploadFiles('editorUploader', {
+      const res = await uploadFiles('imageUploader', {
         ...props,
         files: [file],
         onUploadProgress: ({ progress }) => {
