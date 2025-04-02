@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button"
 import { YearSwitcher } from "@/components/global/year-switcher"
 import type { YearWithPages } from "@/components/context/YearContext"
 import { useAuth, UserButton } from "@clerk/nextjs"
-import { GeneratePDFButton } from "./pdf-generation"
 
 interface HeaderProps {
   years: YearWithPages[]
@@ -18,7 +17,7 @@ interface HeaderProps {
 export default function Header({ years }: HeaderProps) {
   const [isActive, setIsActive] = useState(false)
   const { isSignedIn } = useAuth()
-
+  
   return (
     <header className="sticky top-0 z-50 w-full box-border p-2.5 md:p-5 backdrop-blur-md">
       <div className="flex justify-center items-center relative uppercase text-xs md:text-sm font-normal">
@@ -28,7 +27,6 @@ export default function Header({ years }: HeaderProps) {
         </Link>
 
         <div className="flex gap-4">
-         <GeneratePDFButton />
           <Button
             className="rounded-full p-1.5"
             onClick={() => {

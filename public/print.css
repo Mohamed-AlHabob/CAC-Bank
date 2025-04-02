@@ -1,0 +1,21 @@
+/* public/styles/print.css */
+@supports (color: oklch(0 0 0)) {
+    :root {
+      --primary: oklch(65% 0.19 264);
+      --secondary: oklch(75% 0.15 264);
+    }
+  }
+  
+  @media print {
+    body {
+      color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      background: white !important;
+    }
+    
+    * {
+      box-shadow: none !important;
+      text-shadow: none !important;
+    }
+  }

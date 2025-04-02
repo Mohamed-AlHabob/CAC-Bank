@@ -1,7 +1,7 @@
 "use server"
 
 import prisma from "@/lib/prisma"
-import { Prisma } from "@prisma/client"
+import { Page, Prisma, Year } from "@prisma/client"
 import { revalidatePath } from "next/cache"
 
 async function safeDbOperation<T>(
@@ -236,6 +236,33 @@ export async function getPageBySlug(slug: string) {
     "Failed to fetch page details",
   )
 }
+
+export async function getAllPagesForYear(yearId: string): Promise<{
+  year: Year | null;
+  pages: Page[];
+}> {
+  try {
+    const year = await prisma.year.findUnique({
+      where: { id: yearId },
+      include: {
+        pages: {
+          orderBy: { createdAt: "asc" },
+          where: { isArchived: false }
+        }
+      }
+    });
+
+    if (!year) {
+      return { year: null, pages: [] };
+    }
+
+    return { year, pages: year.pages };
+  } catch (error) {
+    console.error("Failed to fetch pages for year:", error);
+    return { year: null, pages: [] };
+  }
+}
+
 
 export async function getPagesByYear(yearId: string) {
   return await safeDbOperation(
