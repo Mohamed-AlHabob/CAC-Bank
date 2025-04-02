@@ -39,7 +39,7 @@ export default async function RootLayout({
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased custom-scrollbar`}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <YearProvider initialYear={initialYear} years={years}>
-              <Header years={years} />
+              <Header />
               {children}
               <ModalProvider />
             </YearProvider>
