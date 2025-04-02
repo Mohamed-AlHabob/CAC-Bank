@@ -1,4 +1,4 @@
-import About from "@/components/sections/About";
+import About from "@/components/sections/about";
 import { Collaboration } from "@/components/sections/collaboration";
 import Description from "@/components/sections/Description";
 import { Features } from "@/components/sections/features";
