@@ -300,14 +300,16 @@ export function ChartAreaInteractive({ data }: { data: YearWithPages[] }) {
                 />
               )}
               
-              {/* Area chart for profit */}
               <Area
                 dataKey="profit"
                 type="monotone"
                 fill="url(#fillProfit)"
                 stroke="hsl(var(--chart-1))"
                 strokeWidth={2}
-                onClick={(data) => handleYearClick(data?.yearId || "")}
+                onClick={(e: any) => {
+                  const payload = e?.activePayload?.[0]?.payload;
+                  handleYearClick(payload?.yearId || "");
+                }}
                 style={{ cursor: isSignedIn ? 'pointer' : 'default' }}
                 activeDot={{ 
                   r: 6, 
@@ -316,8 +318,6 @@ export function ChartAreaInteractive({ data }: { data: YearWithPages[] }) {
                   fill: "hsl(var(--chart-1))" 
                 }}
               />
-              
-              {/* Trend line (moving average) */}
               <Line
                 dataKey="trend"
                 type="monotone"
