@@ -1,12 +1,10 @@
-import { YearWithPages } from "@/components/context/YearContext";
-import { AnnualReport, Page } from "@prisma/client";
+import { PageWithChildrenPages, YearWithPages } from "@/components/context/YearContext";
+import { AnnualReport } from "@prisma/client";
 import { create } from "zustand";
 
 export type ModalType = "createYear" | "deleteYear" |"editYear" | "createPage" | "deletePage" |  "editPage" | "createAnnualReport" | "editAnnualReport" | "deleteAnnualReport" | "confirmSaveAndPublishPage" | "deletedocument" |"ChangeStatus";
 
-interface PageWithChildrenPages extends Page{
-  childrenPages: Page[];
-}
+
 
 interface ModalData {
   year?: YearWithPages;
