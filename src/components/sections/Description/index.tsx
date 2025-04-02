@@ -31,7 +31,7 @@ export const opacity = {
     }
 };
 
-export default function Description() {
+export const Description = () => {
     const phrase = "CAC Bank envisions a secure, innovative, and inclusive banking experience, leveraging AI and blockchain to empower individuals and businesses with seamless, transparent, and accessible financial services, fostering economic growth and trust worldwide.";
     const description = useRef(null);
     const isInView = useInView(description);

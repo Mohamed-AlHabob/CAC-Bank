@@ -1,14 +1,13 @@
-import About from "@/components/sections/about";
+import { Hero } from "@/components/sections/hero";
+import { Description } from "@/components/sections/Description";
+import { PageSictionShowcase } from "@/components/sections/Projects";
 import { Collaboration } from "@/components/sections/collaboration";
-import Description from "@/components/sections/Description";
-import { Features } from "@/components/sections/features";
-import Footer from "@/components/sections/footer";
-
-import  Hero  from "@/components/sections/hero";
-import PageSictionShowcase from "@/components/sections/Projects";
 import { SamePage } from "@/components/sections/same-page";
-import SlidingImages from "@/components/sections/sliding-images";
 import { StreamlinedExperience } from "@/components/sections/streamlined-experience";
+import { CeoMessage } from "@/components/sections/ceo-message";
+import { Features } from "@/components/sections/features";
+import { SlidingImages } from "@/components/sections/sliding-images";
+import { Footer } from "@/components/sections/footer";
 
 
 export default function Home() {
@@ -22,7 +21,7 @@ export default function Home() {
           <Collaboration />
           <SamePage />
           <StreamlinedExperience />
-          <About/>
+          <CeoMessage/>
           <Features />
           <SlidingImages />
           <Footer />

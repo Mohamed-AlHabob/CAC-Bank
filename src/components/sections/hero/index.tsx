@@ -6,7 +6,7 @@ import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { motion } from "framer-motion"
 
-export default function Hero() {
+export const Hero = () => {
   const firstText = useRef(null)
   const secondText = useRef(null)
   const slider = useRef(null)

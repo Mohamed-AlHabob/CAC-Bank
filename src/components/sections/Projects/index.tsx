@@ -49,7 +49,7 @@ const getRandomColor = () => {
   return color
 }
 
-export default function PageSictionShowcase() {
+export const PageSictionShowcase = () => {
   const { currentYear } = useYear()
   const [modal, setModal] = useState({ active: false, index: 0 })
   const { active, index } = modal

@@ -6,7 +6,7 @@ import { useScroll, motion, useTransform } from 'framer-motion';
 import Magnetic from '@/components/global/button/Magnetic';
 import { useYear } from '@/components/context/YearContext';
 
-export default function Footer() {
+export const Footer =() => {
   const { currentYear } = useYear();
   const container = useRef(null);
 

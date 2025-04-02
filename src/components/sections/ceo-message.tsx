@@ -7,7 +7,7 @@ import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const About = () => {
+ export const CeoMessage = () => {
   useGSAP(() => {
     const clipAnimation = gsap.timeline({
       scrollTrigger: {
@@ -58,4 +58,3 @@ const About = () => {
   );
 };
 
-export default About;

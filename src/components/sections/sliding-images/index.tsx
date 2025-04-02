@@ -17,7 +17,7 @@ const slider2 = [
   { color: "#e1dad6", src: "wix.jpg" }
 ];
 
-export default function SlidingImages() {
+export const SlidingImages = () => {
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
     target: container,
