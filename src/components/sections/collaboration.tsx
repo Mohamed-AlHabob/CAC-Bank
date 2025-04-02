@@ -43,29 +43,29 @@ export const Collaboration = () => {
     ["60px", "60px", "40px", "40px", "20px", "20px", "0px"]
   );
 
-  const avatarOneScale = useTransform(
-    scrollYProgress,
-    [0, 0.23, 0.25, 0.85, 0.9],
-    [0, 0, 1, 1, 0]
-  );
+  // const avatarOneScale = useTransform(
+  //   scrollYProgress,
+  //   [0, 0.23, 0.25, 0.85, 0.9],
+  //   [0, 0, 1, 1, 0]
+  // );
 
-  const avatarTwoScale = useTransform(
-    scrollYProgress,
-    [0, 0.4, 0.45],
-    [0, 0, 1]
-  );
+  // const avatarTwoScale = useTransform(
+  //   scrollYProgress,
+  //   [0, 0.4, 0.45],
+  //   [0, 0, 1]
+  // );
 
-  const avatarTwoOpacity = useTransform(
-    scrollYProgressIncludingOverlap,
-    [0.9999, 1],
-    [1, 0]
-  );
+  // const avatarTwoOpacity = useTransform(
+  //   scrollYProgressIncludingOverlap,
+  //   [0.9999, 1],
+  //   [1, 0]
+  // );
 
-  const avatarThreeScale = useTransform(
-    scrollYProgress,
-    [0, 0.6, 0.65, 0.85, 0.9],
-    [0, 0, 1, 1, 0]
-  );
+  // const avatarThreeScale = useTransform(
+  //   scrollYProgress,
+  //   [0, 0.6, 0.65, 0.85, 0.9],
+  //   [0, 0, 1, 1, 0]
+  // );
 
   return (
     <section ref={targetRef} className="relative z-10 mt-[-30vh] h-[300vh]">
@@ -82,7 +82,7 @@ export const Collaboration = () => {
                 style={{ opacity: avatarGroupOpacity, x: avatarGroupX }}
                 className="absolute right-[10%] top-[1.5%] flex gap-2"
               >
-                <motion.img
+                {/* <motion.img
                   style={{ scale: avatarOneScale }}
                   className="h-[1.5vw] w-[1.5vw] rounded-full border border-[#4ca] object-cover"
                   src="https://unsplash.com/photos/_H6wpor9mjs/download?force=true&w=128&h=128"
@@ -96,7 +96,7 @@ export const Collaboration = () => {
                   style={{ scale: avatarThreeScale }}
                   className="h-[1.5vw] w-[1.5vw] rounded-full border border-[#f0f] object-cover"
                   src="https://unsplash.com/photos/7YVZYZeITc8/download?force=true&w=128&h=128"
-                />
+                /> */}
               </motion.div>
             </motion.div>
           </div>

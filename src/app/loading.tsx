@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const opacity = {
   initial: {
@@ -61,6 +61,7 @@ export default function Loading() {
   };
 
   return (
+    <AnimatePresence mode='wait'>
     <motion.div 
       variants={slideUp} 
       initial="initial" 
@@ -89,5 +90,6 @@ export default function Loading() {
         </>
       }
     </motion.div>
+    </AnimatePresence>
   );
 }

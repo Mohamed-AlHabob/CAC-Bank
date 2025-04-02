@@ -1,79 +1,140 @@
-
 "use client"
 
 import * as React from "react"
+import { TrendingUp } from "lucide-react"
 import { Label, Pie, PieChart } from "recharts"
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import type { YearWithPages } from "@/components/context/YearContext"
 
 export function ChartPie({ data }: { data: YearWithPages[] }) {
-  // Transform data to extract deposits for each year
-  const pieData = React.useMemo(() => {
-    return data.map((year, index) => {
-      const depositReport = year.annualReports.find((report) => report.field === "Deposits")
-      return {
-        year: year.fiscalYear, // Use the fiscal year as the label
-        deposits: depositReport ? Number.parseInt(depositReport.value) : 0, // Extract deposit value
-        // Use the chart color variable based on index (cycling through available colors)
-        fill: `var(--color-year-${(index % 5) + 1})`,
-      }
+  const chartData = React.useMemo(() => {
+    const allReports: Record<string, number> = {}
+
+    data.forEach((year) => {
+      year.annualReports.forEach((report) => {
+        const field = report.field
+        const value = Number.parseFloat(report.value || "0")
+
+        if (!allReports[field]) {
+          allReports[field] = 0
+        }
+
+        allReports[field] += value
+      })
     })
+
+    return Object.entries(allReports)
+      .map(([field, value], index) => ({
+        field,
+        value: Math.abs(value),
+        fill: `var(--color-field-${(index % 5) + 1})`,
+      }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 5) 
   }, [data])
 
-  // Calculate total deposits across all years
-  const totalDeposits = React.useMemo(() => {
-    return pieData.reduce((acc, curr) => acc + curr.deposits, 0)
-  }, [pieData])
+  const totalValue = React.useMemo(() => {
+    return chartData.reduce((acc, curr) => acc + curr.value, 0)
+  }, [chartData])
 
-  // Create a config object with a color for each year
-  const chartConfig = React.useMemo(() => {
-    const config: Record<string, any> = {
-      deposits: {
-        label: "Deposits",
+  const chartConfig = {
+    value: {
+      label: "Value",
+    },
+    ...chartData.reduce(
+      (acc, curr, index) => {
+        acc[curr.field] = {
+          label: curr.field,
+          color: `hsl(var(--chart-${index + 1}))`,
+        }
+        return acc
       },
-    }
+      {} as Record<string, any>,
+    ),
+  } satisfies ChartConfig
 
-    // Add a color entry for each year
-    data.forEach((year, index) => {
-      config[`year-${index + 1}`] = {
-        label: year.fiscalYear,
-        color: `hsl(var(--chart-${(index % 5) + 1}))`,
-      }
+  React.useEffect(() => {
+    const root = document.documentElement
+
+    chartData.forEach((_, index) => {
+      root.style.setProperty(`--color-field-${index + 1}`, `hsl(var(--chart-${index + 1}))`)
     })
 
-    return config
+    return () => {
+      chartData.forEach((_, index) => {
+        root.style.removeProperty(`--color-field-${index + 1}`)
+      })
+    }
+  }, [chartData])
+
+  const formatLargeNumber = (value: number): string => {
+    if (value >= 1e12) {
+      return `${(value / 1e12).toFixed(2)}T`
+    } else if (value >= 1e9) {
+      return `${(value / 1e9).toFixed(2)}B`
+    } else if (value >= 1e6) {
+      return `${(value / 1e6).toFixed(2)}M` 
+    } else if (value >= 1e3) {
+      return `${(value / 1e3).toFixed(2)}K`
+    }
+    return value.toLocaleString()
+  }
+
+  // Get date range for description
+  const dateRange = React.useMemo(() => {
+    if (data.length === 0) return "No data available"
+
+    const years = data.map((y) => y.fiscalYear).sort()
+    return `Fiscal Years ${years[0]} - ${years[years.length - 1]}`
   }, [data])
+
+  // Handle empty state
+  if (chartData.length === 0) {
+    return (
+      <Card className="flex flex-col">
+        <CardHeader className="items-center pb-0">
+          <CardTitle>Financial Metrics Distribution</CardTitle>
+          <CardDescription>No data available</CardDescription>
+        </CardHeader>
+        <CardContent className="flex-1 pb-0 flex items-center justify-center min-h-[400px]">
+          <p className="text-muted-foreground">No annual report data available</p>
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Deposits by Year</CardTitle>
-        <CardDescription>Total deposits for each fiscal year</CardDescription>
+        <CardTitle>Financial Metrics Distribution</CardTitle>
+        <CardDescription>{dateRange}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[500px]">
+        <ChartContainer
+          config={chartConfig}
+          className="mx-auto aspect-square max-h-[400px]"
+        >
           <PieChart>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
             <Pie
-              data={pieData}
-              dataKey="deposits"
-              nameKey="year"
-              innerRadius={60}
+              data={chartData}
+              dataKey="value"
+              nameKey="field"
+              innerRadius={80}
               strokeWidth={5}
-              fill="#8884d8" // This is a fallback, the fill property in data will override this
             >
               <Label
                 content={({ viewBox }) => {
                   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                     return (
                       <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
-                        <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-5xl font-bold">
-                          {totalDeposits.toLocaleString()}
+                        <tspan x={viewBox.cx} y={(viewBox.cy ?? 0) - 10} className="fill-foreground text-3xl font-bold">
+                          {formatLargeNumber(totalValue)}
                         </tspan>
-                        <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} className="fill-muted-foreground">
-                          Total Deposits
+                        <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 20} className="fill-muted-foreground">
+                          Total Value
                         </tspan>
                       </text>
                     )
@@ -84,15 +145,13 @@ export function ChartPie({ data }: { data: YearWithPages[] }) {
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex justify-center gap-4 text-sm">
-        {pieData.map((item, index) => (
-          <div key={item.year} className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-full" style={{ backgroundColor: `var(--color-year-${(index % 5) + 1})` }} />
-            <span>
-              {item.year}: {item.deposits.toLocaleString()}
-            </span>
-          </div>
-        ))}
+      <CardFooter className="flex-col gap-2 text-sm">
+        <div className="flex items-center gap-2 font-medium leading-none">
+          Trending up by 5.2% this period <TrendingUp className="h-4 w-4" />
+        </div>
+        <div className="leading-none text-muted-foreground">
+          Showing distribution of top financial metrics across all years
+        </div>
       </CardFooter>
     </Card>
   )

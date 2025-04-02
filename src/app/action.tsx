@@ -36,7 +36,15 @@ export async function getAllYearsWithPages() {
     async () => {
       return await prisma.year.findMany({
         orderBy: { dateCreated: "desc" },
-        include: { pages: true, annualReports: true },
+        include: { 
+          annualReports: true,
+          pages: {
+            where :{parentPage : null},
+            include: {
+              childrenPages: true,
+            },
+          },
+         },
       });
     },
     [],
@@ -48,7 +56,6 @@ export async function createYear(data: Prisma.YearCreateInput) {
   const result = await safeDbOperation(async () => prisma.year.create({ data }), null, "Failed to create year")
 
   if (result) {
-    revalidatePath("/years")
     revalidatePath("/")
   }
 
@@ -87,8 +94,6 @@ export async function updateYear(id: string, data: Prisma.YearUpdateInput) {
   )
 
   if (result) {
-    revalidatePath("/years")
-    revalidatePath(`/years/${id}`)
     revalidatePath("/")
   }
 
@@ -103,7 +108,6 @@ export async function deleteYear(id: string) {
   )
 
   if (result) {
-    revalidatePath("/years")
     revalidatePath("/")
   }
 
@@ -118,7 +122,8 @@ export async function createAnnualReport(data: Prisma.AnnualReportCreateInput) {
   )
 
   if (result) {
-    revalidatePath(`/years/${result.yearId}`)
+    revalidatePath(`/}`)
+    revalidatePath(`/analysis/}`)
   }
 
   return result
@@ -156,24 +161,21 @@ export async function updateAnnualReport(id: string, data: Prisma.AnnualReportUp
   )
 
   if (result) {
-    revalidatePath(`/years/${result.yearId}`)
+    revalidatePath(`/analysis`)
   }
 
   return result
 }
 
 export async function deleteAnnualReport(id: string) {
-  const report = await getAnnualReportById(id)
-  const yearId = report?.yearId
-
   const result = await safeDbOperation(
     async () => prisma.annualReport.delete({ where: { id } }),
     null,
     "Failed to delete annual report",
   )
 
-  if (result && yearId) {
-    revalidatePath(`/years/${yearId}`)
+  if (result) {
+    revalidatePath(`/analysis`)
   }
 
   return result
@@ -274,7 +276,7 @@ export const savePage = async (pageId: string, content: any) => {
 
 export async function updatePage(id: string, data: Prisma.PageUpdateInput) {
   const page = await getPageById(id)
-  const yearId = page?.yearId
+  
 
   const result = await safeDbOperation(
     async () => prisma.page.update({ where: { id }, data }),
@@ -283,18 +285,15 @@ export async function updatePage(id: string, data: Prisma.PageUpdateInput) {
   )
 
   if (result) {
-    revalidatePath(`/pages/${id}`)
-    if (yearId) revalidatePath(`/years/${yearId}`)
-    revalidatePath(`/pages`)
+    revalidatePath("/")
+    revalidatePath(`/section/${page?.slug}`)
+
   }
 
   return result
 }
 
 export async function deletePage(id: string) {
-  const page = await getPageById(id)
-  const yearId = page?.yearId
-
   const result = await safeDbOperation(
     async () => prisma.page.delete({ where: { id } }),
     null,
@@ -302,16 +301,13 @@ export async function deletePage(id: string) {
   )
 
   if (result) {
-    if (yearId) revalidatePath(`/years/${yearId}`)
-    revalidatePath(`/pages`)
+    revalidatePath(`/`)
   }
 
   return result
 }
 
 export async function archivePage(id: string) {
-  const page = await getPageById(id)
-  const yearId = page?.yearId
 
   const result = await safeDbOperation(
     async () =>
@@ -324,17 +320,13 @@ export async function archivePage(id: string) {
   )
 
   if (result) {
-    revalidatePath(`/pages/${id}`)
-    if (yearId) revalidatePath(`/years/${yearId}`)
-    revalidatePath(`/pages`)
+    revalidatePath(`/`)
   }
 
   return result
 }
 
 export async function publishPage(id: string) {
-  const page = await getPageById(id)
-  const yearId = page?.yearId
 
   const result = await safeDbOperation(
     async () =>
@@ -347,9 +339,7 @@ export async function publishPage(id: string) {
   )
 
   if (result) {
-    revalidatePath(`/pages/${id}`)
-    if (yearId) revalidatePath(`/years/${yearId}`)
-    revalidatePath(`/pages`)
+    revalidatePath(`/`)
   }
 
   return result

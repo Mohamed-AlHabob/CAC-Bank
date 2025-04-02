@@ -8,6 +8,7 @@ import { File,Menu, Mountain, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { YearSwitcher } from "@/components/global/year-switcher"
 import type { YearWithPages } from "@/components/context/YearContext"
+import { useAuth, UserButton } from "@clerk/nextjs"
 
 interface HeaderProps {
   years: YearWithPages[]
@@ -15,6 +16,7 @@ interface HeaderProps {
 
 export default function Header({ years }: HeaderProps) {
   const [isActive, setIsActive] = useState(false)
+  const { isSignedIn } = useAuth()
 
   return (
       <header className="sticky top-0 z-50 w-full box-border p-2.5 md:p-5 backdrop-blur-md">
@@ -41,8 +43,12 @@ export default function Header({ years }: HeaderProps) {
             </Button>
           </div>
 
-          <div className="absolute right-0 flex items-center justify-center gap-2 cursor-pointer">
-            {/* <TranslateElement/> */}
+          <div className="absolute right-0 flex items-center gap-6 justify-center gap-2 cursor-pointer">
+           {isSignedIn ? (
+              <UserButton />
+              ) : (
+               null
+              )}
             <YearSwitcher years={years} />
           </div>
         </div>

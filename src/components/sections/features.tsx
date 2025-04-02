@@ -3,8 +3,8 @@ import { stylesWithCssVar } from "@/utils/motion";
 import { useScroll, useTransform, motion, MotionStyle } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
-import { Chart } from "../global/Chart";
 import { useYear } from "../context/YearContext";
+import { AnnualReportChart } from "../global/Chart";
 
 export const Features = () => {
   const targetRef = useRef<HTMLDivElement | null>(null);
@@ -74,7 +74,7 @@ export const Features = () => {
       <div className="sticky top-[16.7vh] h-[66.8vh] px-16 text-2xl leading-[1] [&_p]:w-[45rem] [&_p]:max-w-[90%]">
         <motion.div style={{ x, scale }} className="relative h-full">
           <motion.figure style={{ opacity }} className="h-full">
-            <Chart />
+            <AnnualReportChart />
           </motion.figure>
           <motion.figure style={{ opacity: text2Opacity }}>
             <Image

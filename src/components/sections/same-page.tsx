@@ -3,8 +3,8 @@ import { BranchIcon } from "@/icons/branch";
 import { stylesWithCssVar } from "@/utils/motion";
 import { useScroll, useTransform, motion, MotionStyle } from "framer-motion";
 import { useRef } from "react";
-import { Chart } from "../global/Chart";
 import { useYear } from "../context/YearContext";
+import { AnnualReportChart } from "../global/Chart";
 
 const animationOrder = {
   initial: 0,
@@ -150,65 +150,53 @@ export const SamePage = () => {
     pos >= 1 ? "relative" : "fixed"
   );
 
-  // const avatarOpacity = useTransform(scrollYProgress, (pos) =>
-  //   pos >= animationOrder.fadeInEnd ? 1 : 0
-  // );
-
   return (
     <section ref={targetRef}>
-      <div className="relative h-[800vh]">
+      <div className="relative h-[800vh] sm:h-[600vh] md:h-[700vh]"> {/* Adjust height based on screen size */}
         <div className="sticky top-1/2 flex origin-center -translate-y-1/2 justify-center">
           <motion.div
-            className="translate-x-centered-offset absolute left-1/2 top-1/2 flex w-[50vw] -translate-y-1/2 scale-[var(--scale)] flex-col items-center justify-center "
+            className="translate-x-centered-offset absolute left-1/2 top-1/2 flex w-[50vw] sm:w-[60vw] md:w-[50vw] -translate-y-1/2 scale-[var(--scale)] flex-col items-center justify-center"
             style={stylesWithCssVar({
               opacity,
               "--x": x,
               "--scale": scale,
             }) as MotionStyle}
           >
-            {/* <Image src="/main-screen.svg" width={50} height={50} alt="" className="h-auto w-full" /> */}
-            <Chart/>
-            {/* <motion.img
-              style={{ opacity: avatarOpacity }}
-              className="absolute left-[13%] top-1/2 h-[1.5vw] w-[1.5vw] translate-y-1/2 rounded-full border border-[#c82] object-cover will-change-transform"
-              src="https://unsplash.com/photos/sibVwORYqs0/download?force=true&w=128&h=128"
-            /> */}
+            <AnnualReportChart className="h-auto w-full" />
             <motion.span
-              className="mt-3 block text-2xl"
+              className="mt-3 block text-2xl sm:text-3xl lg:text-4xl"  // Adjust text size
               style={{ opacity: newBranchOpacity }}
             >
-              <BranchIcon className="mr-3 inline-block h-12 w-12" />
-               2024
+              <BranchIcon className="mr-3 inline-block h-12 w-12 sm:h-16 sm:w-16" />
+              2024
             </motion.span>
           </motion.div>
           <motion.div
-            className="translate-x-centered-offset absolute left-1/2 top-1/2 flex w-[50vw] -translate-y-1/2 scale-[var(--scale)] flex-col items-center justify-center"
+            className="translate-x-centered-offset absolute left-1/2 top-1/2 flex w-[50vw] sm:w-[60vw] md:w-[50vw] -translate-y-1/2 scale-[var(--scale)] flex-col items-center justify-center"
             style={stylesWithCssVar({
               opacity: loadingScreenOpacity,
               "--x": loadingScreenX,
               "--scale": loadingScreenscale,
-            })as MotionStyle}
+            }) as MotionStyle}
           >
-            {/* <Image src="/loading-screen.svg" width={50} height={50} alt="" className="h-auto w-full" /> */}
-            <Chart/>
+            <AnnualReportChart />
             <motion.div
               style={{ opacity: newBranchOpacity }}
               className="absolute inset-0"
             >
-              {/* <Image src="/main-screen.svg" width={50} height={50} alt="" className="h-auto w-full" /> */}
-              <Chart/>
+              <AnnualReportChart />
             </motion.div>
             <motion.span
-              className="mt-3 block text-2xl"
+              className="mt-3 block text-2xl sm:text-3xl lg:text-4xl"
               style={{ opacity: newBranchOpacity }}
             >
-              <BranchIcon className="mr-3 inline-block h-12 w-12" /> 
+              <BranchIcon className="mr-3 inline-block h-12 w-12 sm:h-16 sm:w-16" />
               {currentYear?.fiscalYear}
             </motion.span>
           </motion.div>
 
           <motion.p
-            className="translate-y-centered-offset absolute top-1/2 left-[calc(50%-60rem)] w-[50rem] pl-18 text-2xl leading-tight"
+            className="translate-y-centered-offset absolute top-1/2 left-[calc(50%-60rem)] w-[50rem] sm:w-[40rem] md:w-[45rem] pl-18 text-2xl sm:text-3xl lg:text-4xl leading-tight"
             style={stylesWithCssVar({
               opacity: endTextOpacity,
               "--y": endTexty,
@@ -219,30 +207,32 @@ export const SamePage = () => {
             during the year {currentYear?.fiscalYear}.
           </motion.p>
         </div>
+
         <motion.p
           style={stylesWithCssVar({
             opacity: paragraph1Opacity,
             "--y": paragraph1TranslateY,
             position,
           }) as MotionStyle}
-          className="translate-y-centered-offset top-1/2 left-[20px] w-[300px] pl-16 text-2xl leading-tight "
+          className="translate-y-centered-offset top-1/2 left-[20px] w-[300px] sm:w-[350px] md:w-[400px] pl-16 text-2xl sm:text-3xl lg:text-4xl leading-tight "
         >
           The numbers speak for us,
           <br />
           <span className="text-primary">share the context.</span>
         </motion.p>
+
         <motion.p
           style={stylesWithCssVar({
             opacity: paragraph2Opacity,
             "--y": paragraph2TranslateY,
             position,
           }) as MotionStyle}
-          className="translate-y-centered-offset top-1/2 right-[20px] w-[300px] pr-16 text-xl leading-tight"
+          className="translate-y-centered-offset top-1/2 right-[20px] w-[300px] sm:w-[350px] md:w-[400px] pr-16 text-xl sm:text-2xl md:text-3xl leading-tight"
         >
           Develop, learn and build a ready team.
           <br />
           <span className="text-primary">
-          It is the reason for the difference between one year and another.
+            It is the reason for the difference between one year and another.
           </span>
         </motion.p>
       </div>
