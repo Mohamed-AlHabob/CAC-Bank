@@ -124,9 +124,27 @@
 }
 
 @layer utilities {
-  /* This two helpers apply a -50% to the translate x/y, and add
-   * a --y/--x css variable to it. This util is only here to make writing this class
-   * a bit easier to read in the HTML :)   */
+/* styles/print.css */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .page-break {
+    page-break-after: always;
+  }
+  
+  /* Ensure Plate Editor content prints well */
+  .slate-editor {
+    background: white !important;
+    color: black !important;
+  }
+}
 
    .custom-scrollbar::-webkit-scrollbar {
     width: 0;

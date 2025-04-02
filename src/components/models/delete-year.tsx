@@ -17,7 +17,7 @@ export const DeleteYearModal = () => {
   const onDelete = async () => {
     if (!year?.id) return;
 
-    await toast.promise(
+    toast.promise(
       deleteYear(year.id),
       {
         loading: "Deleting fiscal year...",

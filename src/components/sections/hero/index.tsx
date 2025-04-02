@@ -47,7 +47,7 @@ export default function Hero() {
     <motion.main
       initial="initial"
       animate="enter"
-      className="relative flex h-screen w-full overflow-hidden"
+      className="relative flex h-screen w-full overflow-hidden page-break"
     >
   <Image 
     src="https://ucarecdn.com/99895517-b829-484b-a29b-b19b80467acb/-/preview/1000x732/" 
