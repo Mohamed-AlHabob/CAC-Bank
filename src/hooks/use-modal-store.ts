@@ -4,9 +4,13 @@ import { create } from "zustand";
 
 export type ModalType = "createYear" | "deleteYear" |"editYear" | "createPage" | "deletePage" |  "editPage" | "createAnnualReport" | "editAnnualReport" | "deleteAnnualReport" | "confirmSaveAndPublishPage" | "deletedocument" |"ChangeStatus";
 
+interface PageWithChildrenPages extends Page{
+  childrenPages: Page[];
+}
+
 interface ModalData {
   year?: YearWithPages;
-  page?: Page;
+  page?: PageWithChildrenPages;
   annualReport?: AnnualReport
 }
 

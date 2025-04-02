@@ -49,7 +49,7 @@ export const DeletePageModal = () => {
             <br />
             <span className="text-red-500 font-semibold">{page?.title || "Unknown Page"}</span> will be permanently deleted.
           </p>
-          {page?.childrenPages && page.childrenPages.length > 0 && (
+          {page?.childrenPages && Array.isArray(page.childrenPages) && page.childrenPages.length > 0 && (
             <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900 rounded-md text-sm">
               Warning: This page has {page.childrenPages.length} child page(s). Deleting it will make them
               inaccessible.
