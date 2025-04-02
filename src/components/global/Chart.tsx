@@ -1,29 +1,26 @@
 "use client";
 
-import { Bar, BarChart, ResponsiveContainer } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useYear } from "../context/YearContext";
 import { useMemo } from "react";
 
 const defaultData = [
-  { field: "Revenue", value: 500 },
-  { field: "Expenses", value: 300 },
-  { field: "Investments", value: 200 },
-  { field: "Assets", value: 800 },
+  { fiscalYear: "2020", totalProfit: 186 },
+  { fiscalYear: "2021", totalProfit: 305 },
+  { fiscalYear: "2022", totalProfit: 237 },
+  { fiscalYear: "2023", totalProfit: 73 },
+  { fiscalYear: "2024", totalProfit: 209 },
+  { fiscalYear: "2025", totalProfit: 214 },
 ];
 
 const chartConfig: ChartConfig = {
-  // Your chart configuration
 };
 
-export function AnnualReportChart({ className = "" }) {
+export function Chart() {
   const { currentYear } = useYear();
 
   const chartData = useMemo(() => {
@@ -35,27 +32,33 @@ export function AnnualReportChart({ className = "" }) {
       }, {} as Record<string, number>)
     }] : defaultData.map(item => ({
       fiscalYear: "FY22",
-      [item.field.toLowerCase()]: item.value
+      totalProfit: item.totalProfit
     }));
   }, [currentYear]);
 
-  const fieldNames = useMemo(() => {
-    return currentYear 
-      ? [...new Set(currentYear.annualReports.map(report => report.field.toLowerCase()))]
-      : defaultData.map(item => item.field.toLowerCase());
-  }, [currentYear]);
-
+    const fieldNames = useMemo(() => {
+      return currentYear 
+        ? [...new Set(currentYear.annualReports.map(report => report.field.toLowerCase()))]
+        : ["totalProfit"];
+    }, [currentYear]);
+    
   return (
-    <div className={`h-full w-full ${className}`}>
-      <ResponsiveContainer width="100%" height="100%" minHeight={400}>
-        <ChartContainer config={chartConfig}>
-          <BarChart 
-            data={chartData}
-            margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
-            barCategoryGap={20}
-            barGap={4}
-          >
-            {fieldNames.map((field) => (
+    <ChartContainer config={chartConfig} className={`h-full w-full`}>
+      <BarChart
+         data={chartData}
+         margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
+         barCategoryGap={20}
+         barGap={4}
+       >
+        <CartesianGrid vertical={false} strokeDasharray="3 3" />
+        <XAxis
+          dataKey="fiscalYear"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          tickFormatter={(value: string) => value.slice(2)}
+        />
+        {fieldNames.map((field) => (
               <Bar 
                 key={field}
                 dataKey={field}
@@ -64,25 +67,10 @@ export function AnnualReportChart({ className = "" }) {
                 name={field.charAt(0).toUpperCase() + field.slice(1)}
                 animationDuration={1500}
                 animationEasing="ease-out"
-                maxBarSize={60}
+                maxBarSize={120}
               />
             ))}
-            <ChartTooltip 
-              content={<ChartTooltipContent />}
-              cursor={{ fill: '#F3F4F6', opacity: 0.1 }}
-              wrapperStyle={{ 
-                borderRadius: '0.5rem',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                padding: '0.5rem'
-              }}
-            />
-            <ChartLegend 
-              content={<ChartLegendContent />}
-              wrapperStyle={{ paddingTop: '1rem' }}
-            />
-          </BarChart>
-        </ChartContainer>
-      </ResponsiveContainer>
-    </div>
+      </BarChart>
+    </ChartContainer>
   );
 }

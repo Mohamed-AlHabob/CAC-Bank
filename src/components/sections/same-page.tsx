@@ -4,7 +4,7 @@ import { stylesWithCssVar } from "@/utils/motion";
 import { useScroll, useTransform, motion, MotionStyle } from "framer-motion";
 import { useRef } from "react";
 import { useYear } from "../context/YearContext";
-import { AnnualReportChart } from "../global/Chart";
+import { AnnualReportChart } from "../global/annual-report-chart";
 
 const animationOrder = {
   initial: 0,
@@ -162,7 +162,7 @@ export const SamePage = () => {
               "--scale": scale,
             }) as MotionStyle}
           >
-            <AnnualReportChart className="h-auto w-full" />
+            <AnnualReportChart />
             <motion.span
               className="mt-3 block text-2xl sm:text-3xl lg:text-4xl"  // Adjust text size
               style={{ opacity: newBranchOpacity }}

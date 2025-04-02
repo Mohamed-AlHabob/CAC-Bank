@@ -3,8 +3,9 @@ import { stylesWithCssVar } from "@/utils/motion";
 import { useScroll, useTransform, motion, MotionStyle } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
+
 import { useYear } from "../context/YearContext";
-import { AnnualReportChart } from "../global/Chart";
+import { Chart } from "../global/Chart";
 
 export const Features = () => {
   const targetRef = useRef<HTMLDivElement | null>(null);
@@ -64,17 +65,17 @@ export const Features = () => {
     >
       <div className="sticky top-0 z-20 w-full  backdrop-blur-md py-6">
         <div className="max-w-5xl mx-auto px-6 text-center">
-          <p className="mt-20 text-2xl">
+          <p className="mt-20 text-2xl ">
             &quot;{currentYear?.ceosMessage}.&quot;
           </p>
-          <p className="mt-2 text-gray-500 italic">— Dr. Ibrahim Al-Houthi {currentYear?.fiscalYear}</p>
+          <p className="mt-2 text-gray-400 italic">— Dr. Ibrahim Al-Houthi {currentYear?.fiscalYear}</p>
         </div>
       </div>
 
       <div className="sticky top-[16.7vh] h-[66.8vh] px-16 text-2xl leading-[1] [&_p]:w-[45rem] [&_p]:max-w-[90%]">
         <motion.div style={{ x, scale }} className="relative h-full">
           <motion.figure style={{ opacity }} className="h-full">
-            <AnnualReportChart />
+            <Chart />
           </motion.figure>
           <motion.figure style={{ opacity: text2Opacity }}>
             <Image
@@ -100,7 +101,7 @@ export const Features = () => {
             opacity: text1Opacity,
             "--y": text1Y,
           }) as MotionStyle}
-          className="translate-y-centered-offset absolute top-1/2 left-0 "
+          className="translate-y-centered-offset absolute top-1/2 left-0"
         >
           <span >Preconfigured environments</span>
           <br />
@@ -112,7 +113,7 @@ export const Features = () => {
             opacity: text2Opacity,
             "--y": text2Y,
           }) as MotionStyle}
-          className="translate-y-centered-offset absolute top-1/2 left-0 text-white dark:text-black"
+          className="translate-y-centered-offset absolute top-1/2 left-0"
         >
           <span>Command Palette</span>
           <br />
@@ -123,7 +124,7 @@ export const Features = () => {
             opacity: text3Opacity,
             "--y": text3Y,
           }) as MotionStyle}
-          className="translate-y-centered-offset absolute top-1/2 left-0 text-white dark:text-black"
+          className="translate-y-centered-offset absolute top-1/2 left-0"
         >
           <span>Devtools</span>
           <br />
