@@ -13,6 +13,7 @@ import { Spinner } from "@/components/global/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { createYear } from "@/app/action";
 import { toast } from "sonner";
+import { useYear } from "../context/YearContext";
 
 const formSchema = z.object({
   fiscalYear: z.string().min(4, {
@@ -24,6 +25,7 @@ const formSchema = z.object({
 
 export const CreateYearModal = () => {
   const { isOpen, onClose, type } = useModal();
+  const { refreshYears  } = useYear()
   const router = useRouter();
   const isModalOpen = isOpen && type === "createYear";
 
@@ -52,6 +54,7 @@ export const CreateYearModal = () => {
           loading: "Creating fiscal year...",
           success: () => {
             form.reset();
+            refreshYears()
             router.refresh();
             onClose();
             return "Fiscal year created successfully";

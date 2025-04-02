@@ -100,7 +100,7 @@ export const Features = () => {
             opacity: text1Opacity,
             "--y": text1Y,
           }) as MotionStyle}
-          className="translate-y-centered-offset absolute top-1/2 left-0 text-white dark:text-black"
+          className="translate-y-centered-offset absolute top-1/2 left-0 "
         >
           <span >Preconfigured environments</span>
           <br />

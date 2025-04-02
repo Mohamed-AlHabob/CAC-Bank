@@ -12,6 +12,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { Spinner } from "@/components/global/spinner";
 import { updateAnnualReport } from "@/app/action";
 import { toast } from "sonner";
+import { useYear } from "../context/YearContext";
 
 const formSchema = z.object({
   field: z.string().min(1, {
@@ -24,6 +25,7 @@ const formSchema = z.object({
 
 export const EditAnnualReportModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const { refreshYears  } = useYear()
   const router = useRouter();
   const isModalOpen = isOpen && type === "editAnnualReport";
   const { annualReport } = data;
@@ -51,6 +53,7 @@ export const EditAnnualReportModal = () => {
         {
           loading: "Updating annual report...",
           success: () => {
+            refreshYears()
             router.refresh();
             onClose();
             return "Annual report updated successfully";

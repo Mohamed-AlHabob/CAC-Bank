@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button";
 import { AlertTriangle } from "lucide-react";
 import { deleteYear } from "@/app/action";
 import { toast } from "sonner";
+import { useYear } from "../context/YearContext";
 
 export const DeleteYearModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const { refreshYears  } = useYear()
   const router = useRouter();
   const isModalOpen = isOpen && type === "deleteYear";
   const { year } = data;
@@ -22,6 +24,7 @@ export const DeleteYearModal = () => {
       {
         loading: "Deleting fiscal year...",
         success: () => {
+          refreshYears()
           router.refresh();
           onClose();
           return "Fiscal year deleted successfully";

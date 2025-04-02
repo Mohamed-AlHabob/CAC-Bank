@@ -7,14 +7,9 @@ import Nav from "./nav"
 import { File, Menu, Mountain, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { YearSwitcher } from "@/components/global/year-switcher"
-import type { YearWithPages } from "@/components/context/YearContext"
 import { useAuth, UserButton } from "@clerk/nextjs"
 
-interface HeaderProps {
-  years: YearWithPages[]
-}
-
-export default function Header({ years }: HeaderProps) {
+export default function Header() {
   const [isActive, setIsActive] = useState(false)
   const { isSignedIn } = useAuth()
   
@@ -44,7 +39,7 @@ export default function Header({ years }: HeaderProps) {
           {isSignedIn ? (
             <UserButton />
           ) : null}
-          <YearSwitcher years={years} />
+          <YearSwitcher/>
         </div>
       </div>
       <AnimatePresence mode="wait">{isActive && <Nav setIsActive={setIsActive} isActive={false} />}</AnimatePresence>

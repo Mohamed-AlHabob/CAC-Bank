@@ -24,7 +24,7 @@ const formSchema = z.object({
 export const CreatePageModal = () => {
   const { isOpen, onClose, type, data } = useModal()
   const router = useRouter()
-  const { currentYear } = useYear()
+  const { currentYear,refreshYears  } = useYear()
   const isModalOpen = isOpen && type === "createPage"
   const { page } = data
 
@@ -57,6 +57,7 @@ export const CreatePageModal = () => {
       })
 
       form.reset()
+      refreshYears()
       router.refresh()
       onClose()
     } catch (error) {

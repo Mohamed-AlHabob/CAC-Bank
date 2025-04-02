@@ -18,7 +18,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { YearWithPages } from "@/components/context/YearContext";
+import { useYear, YearWithPages } from "@/components/context/YearContext";
 import { useAuth } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
@@ -137,7 +137,8 @@ function CustomTooltip({ active, payload, label }: any) {
   );
 }
 
-export function ChartAreaInteractive({ data }: { data: YearWithPages[] }) {
+export function ChartAreaInteractive() {
+  const { years } = useYear()
   const isMobile = useIsMobile();
   const [timeRange, setTimeRange] = React.useState("3y");
   const { isSignedIn } = useAuth();
@@ -148,6 +149,8 @@ export function ChartAreaInteractive({ data }: { data: YearWithPages[] }) {
       setTimeRange("1y");
     }
   });
+
+  const data = years
 
   const chartData = transformChartData(data);
   

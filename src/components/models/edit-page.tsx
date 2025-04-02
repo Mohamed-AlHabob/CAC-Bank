@@ -26,7 +26,7 @@ const formSchema = z.object({
 export const EditPageModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
-  const { currentYear } = useYear();
+  const { currentYear,refreshYears  } = useYear()
   const isModalOpen = isOpen && type === "editPage";
   const { page } = data;
 
@@ -59,6 +59,7 @@ export const EditPageModal = () => {
       {
         loading: "Updating page...",
         success: () => {
+          refreshYears()
           router.refresh();
           onClose();
           return "Page updated successfully";

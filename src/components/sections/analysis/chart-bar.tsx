@@ -14,7 +14,7 @@ import {
 } from "recharts"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer } from "@/components/ui/chart"
-import type { YearWithPages } from "@/components/context/YearContext"
+import { useYear, type YearWithPages } from "@/components/context/YearContext"
 import { useAuth } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { useModal } from "@/hooks/use-modal-store"
@@ -86,10 +86,12 @@ function CustomBarTooltip({ active, payload, label }: any) {
   );
 }
 
-export function ChartBar({ data }: { data: YearWithPages[] }) {
+export function ChartBar() {
+  const { years } = useYear()
   const { isSignedIn } = useAuth();
   const { onOpen } = useModal();
   const [chartType, setChartType] = React.useState("grouped");
+  const data = years
 
   const fieldNames = extractFieldNames(data);
 

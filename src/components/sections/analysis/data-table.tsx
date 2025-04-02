@@ -27,14 +27,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import type { YearWithPages } from "@/components/context/YearContext"
+import { useYear, type YearWithPages } from "@/components/context/YearContext"
 import { useAuth } from "@clerk/nextjs"
 import { ModalType, useModal } from "@/hooks/use-modal-store"
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
 function createColumns(data: YearWithPages[], isSignedIn: boolean, onOpen: (modalType: ModalType, modalProps?: Record<string, any>) => void): ColumnDef<YearWithPages>[] {
-  // Extract all report fields
+
   const allReportFields = new Set<string>()
   data.forEach((year) => {
     year.annualReports.forEach((report) => {
@@ -114,7 +114,6 @@ function createColumns(data: YearWithPages[], isSignedIn: boolean, onOpen: (moda
     },
   ]
 
-  // Add dynamic columns for each report field
   fieldNames.forEach((field) => {
     columns.push({
       id: field,
@@ -232,7 +231,9 @@ function exportToCSV(data: YearWithPages[], columns: ColumnDef<YearWithPages>[])
   document.body.removeChild(link)
 }
 
-export function DataTable({ data }: { data: YearWithPages[] }) {
+export function DataTable() {
+  const { years } = useYear()
+  const data = years
   const { isSignedIn } = useAuth()
   const { onOpen } = useModal()
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -244,7 +245,6 @@ export function DataTable({ data }: { data: YearWithPages[] }) {
 
   // Create columns
   const columns = createColumns(data, isSignedIn ?? false, onOpen)
-
   const table = useReactTable({
     data,
     columns,

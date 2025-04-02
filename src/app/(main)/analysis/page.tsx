@@ -1,15 +1,12 @@
-import { getAllYearsWithPages } from "@/app/action"
 import { ChartAreaInteractive } from "@/components/sections/analysis/chart-area-interactive"
 import { ChartBar } from "@/components/sections/analysis/chart-bar"
 import { ChartPie } from "@/components/sections/analysis/chart-pie"
 import { DataTable } from "@/components/sections/analysis/data-table"
 import { SectionCards } from "@/components/sections/analysis/section-cards"
-import type { YearWithPages } from "@/components/context/YearContext"
 import { Suspense } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default async function AnnualDataPage() {
-  const years = await getAllYearsWithPages()
 
   return (
     <div className="flex flex-1 flex-col">
@@ -21,21 +18,21 @@ export default async function AnnualDataPage() {
 
           <div className="px-4 lg:px-6 space-y-4">
             <Suspense fallback={<ChartSkeleton height="300px" />}>
-              <ChartAreaInteractive data={years as YearWithPages[]} />
+              <ChartAreaInteractive />
             </Suspense>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Suspense fallback={<ChartSkeleton />}>
-                <ChartBar data={years} />
+                <ChartBar />
               </Suspense>
               <Suspense fallback={<ChartSkeleton />}>
-                <ChartPie data={years} />
+                <ChartPie />
               </Suspense>
             </div>
           </div>
 
           <Suspense fallback={<TableSkeleton />}>
-            <DataTable data={years} />
+            <DataTable/>
           </Suspense>
         </div>
       </div>

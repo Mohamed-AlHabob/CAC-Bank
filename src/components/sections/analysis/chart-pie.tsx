@@ -6,9 +6,11 @@ import { Label, Pie, PieChart } from "recharts"
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import type { YearWithPages } from "@/components/context/YearContext"
+import { useYear } from "@/components/context/YearContext"
 
-export function ChartPie({ data }: { data: YearWithPages[] }) {
+export function ChartPie() {
+  const { years } = useYear()
+  const data = years 
   const chartData = React.useMemo(() => {
     const allReports: Record<string, number> = {}
 

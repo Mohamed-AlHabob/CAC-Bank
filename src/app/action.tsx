@@ -1,7 +1,7 @@
 "use server"
 
 import prisma from "@/lib/prisma"
-import { Page, Prisma, Year } from "@prisma/client"
+import { Prisma } from "@prisma/client"
 import { revalidatePath } from "next/cache"
 
 async function safeDbOperation<T>(
@@ -70,14 +70,6 @@ export async function getYearById(id: string) {
   )
 }
 
-export async function getYearByFiscalYear(fiscalYear: string) {
-  return await safeDbOperation(
-    async () => prisma.year.findUnique({ where: { fiscalYear } }),
-    null,
-    "Failed to fetch year by fiscal year",
-  )
-}
-
 export async function getAllYears() {
   return await safeDbOperation(
     async () => prisma.year.findMany({ orderBy: { fiscalYear: "asc" } }),
@@ -127,30 +119,6 @@ export async function createAnnualReport(data: Prisma.AnnualReportCreateInput) {
   }
 
   return result
-}
-
-export async function getAnnualReportById(id: string) {
-  return await safeDbOperation(
-    async () => prisma.annualReport.findUnique({ where: { id } }),
-    null,
-    "Failed to fetch annual report",
-  )
-}
-
-export async function getAnnualReportsByYear(yearId: string) {
-  return await safeDbOperation(
-    async () => prisma.annualReport.findMany({ where: { yearId } }),
-    [],
-    "Failed to fetch annual reports for this year",
-  )
-}
-
-export async function getAnnualReportsByField(field: string) {
-  return await safeDbOperation(
-    async () => prisma.annualReport.findMany({ where: { field } }),
-    [],
-    "Failed to fetch annual reports by field",
-  )
 }
 
 export async function updateAnnualReport(id: string, data: Prisma.AnnualReportUpdateInput) {
@@ -237,58 +205,6 @@ export async function getPageBySlug(slug: string) {
   )
 }
 
-export async function getAllPagesForYear(yearId: string): Promise<{
-  year: Year | null;
-  pages: Page[];
-}> {
-  try {
-    const year = await prisma.year.findUnique({
-      where: { id: yearId },
-      include: {
-        pages: {
-          orderBy: { createdAt: "asc" },
-          where: { isArchived: false }
-        }
-      }
-    });
-
-    if (!year) {
-      return { year: null, pages: [] };
-    }
-
-    return { year, pages: year.pages };
-  } catch (error) {
-    console.error("Failed to fetch pages for year:", error);
-    return { year: null, pages: [] };
-  }
-}
-
-
-export async function getPagesByYear(yearId: string) {
-  return await safeDbOperation(
-    async () => prisma.page.findMany({ where: { yearId } }),
-    [],
-    "Failed to fetch pages for this year",
-  )
-}
-
-export async function getPagesByParent(parentPageId: string) {
-  return await safeDbOperation(
-    async () => prisma.page.findMany({ where: { parentPageId } }),
-    [],
-    "Failed to fetch child pages",
-  )
-}
-
-export async function getParentPages() {
-  return await safeDbOperation(
-    async () => prisma.page.findMany({ where: { parentPageId: null } }),
-    [],
-    "Failed to fetch parent pages",
-  )
-}
-
-
 export const savePage = async (pageId: string, content: any) => {
   try {
     await prisma.page.update({
@@ -370,24 +286,4 @@ export async function publishPage(id: string) {
   }
 
   return result
-}
-
-// Utility Functions
-export async function getFullYearStructure(yearId: string) {
-  return await safeDbOperation(
-    async () =>
-      prisma.year.findUnique({
-        where: { id: yearId },
-        include: {
-          annualReports: true,
-          pages: {
-            include: {
-              childrenPages: true,
-            },
-          },
-        },
-      }),
-    null,
-    "Failed to fetch year structure",
-  )
 }

@@ -16,14 +16,10 @@ import {
 import { Button } from "../ui/button"
 import { useYear } from "../context/YearContext"
 import { useModal } from "@/hooks/use-modal-store"
-import type { YearWithPages } from "../context/YearContext"
 
-interface YearSwitcherProps {
-  years: YearWithPages[]
-}
 
-export function YearSwitcher({ years }: YearSwitcherProps) {
-  const { currentYear, changeYear } = useYear()
+export function YearSwitcher() {
+  const { currentYear, changeYear,years } = useYear()
   const { onOpen } = useModal()
   const { isSignedIn } = useAuth()
 
@@ -44,8 +40,8 @@ export function YearSwitcher({ years }: YearSwitcherProps) {
             {years.map((year, index) => (
               <div key={year.id} className="relative group">
                 <DropdownMenuItem 
-                  onClick={() => changeYear(year)} 
-                  className="gap-2 p-2 pr-10" // Extra padding for actions
+                  onClick={() => changeYear(year.id)} 
+                  className="gap-2 p-2 pr-10"
                 >
                   {year.fiscalYear}
                   <DropdownMenuShortcut className="group-hover:hidden">⌘{index + 1}</DropdownMenuShortcut>

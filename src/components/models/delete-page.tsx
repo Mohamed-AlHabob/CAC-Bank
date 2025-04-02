@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button";
 import { AlertTriangle } from "lucide-react";
 import { deletePage } from "@/app/action";
 import { toast } from "sonner";
+import { useYear } from "../context/YearContext";
 
 export const DeletePageModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const { refreshYears  } = useYear()
   const router = useRouter();
   const isModalOpen = isOpen && type === "deletePage";
   const { page } = data;
@@ -23,6 +25,7 @@ export const DeletePageModal = () => {
         loading: "Deleting page...",
         success: () => {
           router.refresh();
+          refreshYears()
           onClose();
           return "Page deleted successfully";
         },

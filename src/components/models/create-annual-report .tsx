@@ -26,7 +26,7 @@ const formSchema = z.object({
 export const CreateAnnualReportModal = () => {
   const { isOpen, onClose, type } = useModal();
   const router = useRouter();
-  const { currentYear } = useYear()
+  const { currentYear,refreshYears  } = useYear()
   const isModalOpen = isOpen && type === "createAnnualReport";
 
   const form = useForm({
@@ -54,6 +54,7 @@ export const CreateAnnualReportModal = () => {
           success: () => {
             form.reset();
             router.refresh();
+            refreshYears()
             onClose();
             return "Annual report created successfully";
           },
