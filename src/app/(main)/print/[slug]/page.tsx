@@ -7,7 +7,7 @@ type PageProps = {
 };
 
 export default async function PrintPage({ params }: PageProps) {
-  const slug = (await params).slug
+  const slug = params.slug;
   const page = await getPageBySlug(slug);
   
   if (!page) {
