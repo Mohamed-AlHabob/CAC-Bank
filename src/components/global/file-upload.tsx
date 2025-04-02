@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { toast } from "sonner"
-import { OurFileRouter } from "@/app/api/uploadthing/route"
+import { OurFileRouter } from "@/lib/our-file-router"
 
 interface FileUploadProps {
   endpoint: keyof OurFileRouter
